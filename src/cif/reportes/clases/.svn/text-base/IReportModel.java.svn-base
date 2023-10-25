@@ -1,0 +1,19 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package cif.reportes.clases;
+
+import cif.manage.User;
+import java.sql.SQLException;
+import javax.swing.table.TableModel;
+
+/**
+ *
+ * @author Raisel
+ */
+public interface IReportModel
+{ 
+ public TableModel getModel(User user, Integer anno, boolean desglose) throws SQLException;
+}

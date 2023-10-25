@@ -1,0 +1,148 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package cif.reportes.clases;
+
+import cif.bd.DBAccess;
+import cif.bd.JDBCAdapter;
+import cif.manage.User;
+import cif.manage.UserTypes;
+import java.sql.SQLException;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
+/**
+ *
+ * @author Raisel
+ */
+public abstract class AbstractCritReport implements IReportModel
+{
+    private TableModel TM;
+    protected JDBCAdapter db;
+    protected User user;
+    protected Integer anno;
+    protected boolean desglose;
+
+    protected abstract TableModel getModel_AP();
+    
+    protected abstract TableModel getModel_US();
+
+    protected abstract TableModel getModel_EFI();
+
+    protected abstract TableModel getModel_MUN();
+
+    protected abstract TableModel getModel_PROV();
+
+    protected abstract TableModel getModel_PROV_DESGLOSE();
+
+    protected abstract TableModel getModel_NAC();
+
+    protected abstract TableModel getModel_NAC_DESGLOSE();
+
+    protected String getSQLReplacement(String _sql, String entity, String anno)
+    {
+       String sql = null;
+       sql = _sql.replaceFirst(":id", entity);
+       sql = sql.replaceFirst(":anno", anno);
+
+       return sql;
+    }
+
+    protected String getSQLReplacement(String _sql, String anno)
+    {
+       String sql = null;
+       sql = _sql.replaceFirst(":anno", anno);
+
+       return sql;
+    }
+
+    /**Devuelve el indice de la fila a insertar para el
+     desglose Nacional por Provincia-Municipio-Unidad Básica.
+     Devuelve el index negativo como señal de que la fila debe actualizarse en vez de insertar una nueva.
+     Se asume que el indice de las columnas es el siguiente: Provincia-0, Municipio-1, Tipo de Entidad-2*/
+    protected int getProvincia_Mun_Ent_RowIndex(String Prov, String Mun, String Ent, DefaultTableModel tm)
+    {
+         int rowIndex = 0;     //tm.getRowCount()-1;
+         String tmProv = "";
+         String tmMun = "";
+         String tmEnt = "";
+
+         for(int k=0; k<tm.getRowCount(); k++)
+         {
+          tmProv = tm.getValueAt(k,0).toString();
+          tmMun = tm.getValueAt(k,1).toString();
+          tmEnt = tm.getValueAt(k,2).toString();
+
+          if(Prov.equals(tmProv))
+          {
+            if(Mun.equals(tmMun))
+            {
+              if(Ent.equals(tmEnt))
+              {
+                rowIndex = k*(-1);
+                break;
+              }
+              else
+               rowIndex = k;
+            }
+            else
+             continue;   // rowIndex = k;
+          }
+          else
+           continue;
+         }
+
+         return rowIndex;
+    }
+
+    protected TableModel getReportModel(User _user, Integer _anno, boolean _desglose) throws SQLException
+    {
+     this.user = _user;
+     this.anno = _anno;
+     this.desglose = _desglose;
+
+     TM = new DefaultTableModel();
+     db = DBAccess.getconnection();
+
+      if(user.getType() == UserTypes.Unidad_Silvicola) //Reporte por Unidad_Silvicola --------------------------------------------------------------
+      {
+       TM = getModel_US();
+      }
+      else
+      if(user.getType() == UserTypes.Area_Protegida) //Reporte por Area_Protegida-------------------------------------------------------------------
+      {
+       TM = getModel_AP();
+      }
+      else
+      if(user.getType() == UserTypes.EFI) //Reporte por EFI ------------------------------------------------------------------------------------
+      {
+       TM = getModel_EFI();
+      }
+      else
+      if(user.getType() == UserTypes.Municipal) //Reporte por Municipio --------------------------------------------------------------------------
+      {
+       TM = getModel_MUN();
+      }
+      else
+      if(user.getType() == UserTypes.Provincial) //Reporte por Provincia -----------------------------------------------------------------------
+      {
+         if(desglose)
+          TM = getModel_PROV_DESGLOSE();
+         else
+          TM = getModel_PROV();
+      }
+      else
+      if(user.getType() == UserTypes.Nacional) //Reporte Nacional -----------------------------------------------------------------------
+      {
+         if(desglose)
+          TM = getModel_NAC_DESGLOSE();
+         else
+          TM = getModel_NAC();
+      }
+
+      return TM;
+    }
+}
+

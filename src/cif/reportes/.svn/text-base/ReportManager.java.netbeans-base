@@ -1,0 +1,126 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package cif.reportes;
+
+import cif.manage.User;
+import cif.reportes.clases.IReportModel;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.TableModel;
+
+/**
+ *
+ * @author Raisel
+ */
+public class ReportManager
+{
+ //private static JDBCAdapter db;
+ public static final String C_1_1_TotalAreaCubierta         = "C_1_1_TotalAreaCubierta";
+ public static final String C_1_2_IndiceBoscosidad          = "C_1_2_IndiceBoscosidad";
+ public static final String C_1_3_RelacionTac               = "C_1_3_RelacionTac";
+ public static final String C_1_4_EfectividadPlantaciones   = "C_1_4_EfectividadPlantaciones";
+ public static final String C_1_5_AreasPendReforestar       = "C_1_5_AreasPendReforestar";
+ public static final String C_1_6_ArbolesAislados           = "C_1_6_ArbolesAislados";
+ public static final String C_2_1_1_BosquesAfectadosInc     = "C_2_1_1_BosquesAfectadosInc";
+ public static final String C_2_1_2_IncendEspecie           = "C_2_1_2_IncendEspecie";
+
+ public static TableModel mostrar_Reporte(String criterio, User user, int anno, boolean desglose) throws SQLException
+ {
+     TableModel tm = null;
+     
+        try {
+            
+            IReportModel reportModel = (IReportModel) Class.forName("cif.reportes.clases."+criterio+"_Model").newInstance();
+            tm = reportModel.getModel(user, anno, desglose);
+
+            //       switch(criterio)
+            //       {
+            //           case C_1_1_TotalAreaCubierta:
+            //           {
+            //               tm = getC_1_1_TotalAreaCubierta_Model(user);
+            //               break;
+            //           }
+            //
+            //           default: break;
+            //       }
+            return tm;
+        }
+        catch (InstantiationException ex) {
+            Logger.getLogger(ReportManager.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            Logger.getLogger(ReportManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         catch (ClassNotFoundException ex) {
+            Logger.getLogger(ReportManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+     return tm;
+   }
+
+
+// private static TableModel getC_1_1_TotalAreaCubierta_Model(User user) throws SQLException
+// {
+//  TableModel TM = null;
+//  JDBCAdapter db = DBAccess.getconnection();
+//
+//  if(user.getType() == UserTypes.Unidad_Silvicola) //Reporte por Unidad_Silvicola -----------------------
+//  {
+//   String sql = ReportSQLSentences.SQL_1_1_US_TotalAreaCubierta;
+//   sql = sql.replaceFirst(":", user.getIdEntidad());
+//   db.executeQueryUperCase(sql);
+//   TM = db;
+//  }
+//  else
+//  if(user.getType() == UserTypes.Area_Protegida) //Reporte por Area_Protegida-----------------------
+//  {
+//   String sql = ReportSQLSentences.SQL_1_1_AP_TotalAreaCubierta;
+//   sql = sql.replaceFirst(":", user.getIdEntidad());
+//   db.executeQueryUperCase(sql);
+//   TM = db;
+//  }
+//  else
+//  if(user.getType() == UserTypes.EFI) //Reporte por EFI -----------------------
+//  {
+//   String sql = ReportSQLSentences.SQL_1_1_EFI_AreaCubierta_Subgrupo;
+//   sql = sql.replaceFirst(":", user.getIdEntidad());
+//   db.executeQueryUperCase(sql);
+//   if(!db.isEmpty())
+//   {
+//    DefaultTableModel deftm = new javax.swing.table.DefaultTableModel(db.getAllRows(), db.getColumnNames());
+//
+//    sql = ReportSQLSentences.SQL_1_1_EFI_AreaCubierta_TOTAL;
+//    sql = sql.replaceFirst(":", user.getIdEntidad());
+//    db.executeQuery(sql);
+//
+//    Object []row = new String []{"TOTAL","","","", db.getValueAt(0,1).toString(), db.getValueAt(0,2).toString()};
+//    deftm.addRow(row);
+//    TM = deftm;
+//   }
+//  }
+//  else
+//  if(user.getType() == UserTypes.Municipal) //Reporte por Municipio -----------------------
+//  {
+//   String sql = ReportSQLSentences.SQL_1_1_EFI_AreaCubierta_Subgrupo;
+//   sql = sql.replaceFirst(":", user.getIdEntidad());
+//   db.executeQueryUperCase(sql);
+//   if(!db.isEmpty())
+//   {
+//    DefaultTableModel deftm = new javax.swing.table.DefaultTableModel(db.getAllRows(), db.getColumnNames());
+//
+//    sql = ReportSQLSentences.SQL_1_1_EFI_AreaCubierta_TOTAL;
+//    sql = sql.replaceFirst(":", user.getIdEntidad());
+//    db.executeQuery(sql);
+//
+//    Object []row = new String []{"TOTAL","","","", db.getValueAt(0,1).toString(), db.getValueAt(0,2).toString()};
+//    deftm.addRow(row);
+//    TM = deftm;
+//   }
+//  }
+//
+//  return TM;
+// }
+}

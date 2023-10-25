@@ -1,0 +1,23 @@
+8
+
+dir
+0
+https://192.168.10.23:8443/svn/BaseConocimiento/RepositorioProyectos/CIF/fuentes/src/cif/adminstration/manejables
+https://192.168.10.23:8443/svn/BaseConocimiento
+add
+
+
+
+
+
+
+
+svn:special svn:externals svn:needs-lock
+
+UserManejable.java
+file
+
+
+
+add
+

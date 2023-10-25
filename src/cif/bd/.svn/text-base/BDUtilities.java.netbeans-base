@@ -1,0 +1,53 @@
+package cif.bd;
+
+import cif.manage.User;
+import com.twmacinta.util.MD5;
+import java.sql.SQLException;
+
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ *
+ * @author Pedro
+ */
+public class BDUtilities
+{
+    public static User getUser(String login, String password) throws SQLException
+    {
+        if(!CollectionConnection.hasConnection(ClassParams.HOST))
+        {
+                DataAccess da = new DataAccess(ClassParams.HOST,ClassParams.DRIVER,ClassParams.USER,ClassParams.PASSW);
+                CollectionConnection.SetConnection(da);
+        }
+        JDBCAdapter adapter = CollectionConnection.getConnection(ClassParams.HOST);
+        String passw = new MD5(password).asHex();
+        String query = String.format("select tipo, usuarios.provincia, usuarios.municipio from usuarios where login='%s' and contrasenna='%s'",login,passw);
+        adapter.executeQuery(query);
+        if(adapter.getRowCount()==0)
+        {
+            return null;
+        }
+        User user = new User(login,(Integer)adapter.getValueAt(0, 0),adapter.getValueAt(0, 2).toString(),adapter.getValueAt(0, 1).toString());
+        return user;
+    }
+
+    public static String getEfiName(String id)
+    {
+        JDBCAdapter adapter = CollectionConnection.getConnection(ClassParams.HOST);
+        String query = String.format("select nombre from efi where id='%s'",id);
+        adapter.executeQuery(query);
+        return adapter.getValueAt(0, 0).toString();
+    }
+
+    public static String[] getUSData(String id)
+    {
+        JDBCAdapter adapter = CollectionConnection.getConnection(ClassParams.HOST);
+        String query = String.format("select nombre, efi from usilvicola where id='%s'",id);
+        adapter.executeQuery(query);
+        String[] result = new String[]{adapter.getRow(0)[0].toString(),adapter.getRow(0)[1].toString()};
+        return result;
+    }
+}

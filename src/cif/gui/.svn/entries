@@ -1,0 +1,112 @@
+8
+
+dir
+3077
+https://192.168.10.23:8443/svn/BaseConocimiento/RepositorioProyectos/CIF/fuente/src/cif/gui
+https://192.168.10.23:8443/svn/BaseConocimiento
+
+
+
+2012-10-29T17:38:13.015625Z
+3077
+Yuleisy
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+cc5e2b2a-a4f3-bf45-a7f4-4b2335f55bd4
+
+Criterio_1
+dir
+
+JF_Principal.java
+file
+3217
+
+
+
+2012-12-18T16:13:50.843750Z
+e519790704d816d914b6644d9b7c2e9d
+2012-12-18T15:11:49.187500Z
+3217
+Pedro
+
+McpioEntidad.java
+file
+0
+
+
+add
+
+Criterio_2
+dir
+
+Criterio_3
+dir
+
+JF_Principal.form
+file
+3217
+
+
+
+2012-12-18T16:13:50.828125Z
+679291969fcd19915ac6d57d8425665c
+2012-12-18T15:11:49.187500Z
+3217
+Pedro
+
+McpioEntidad.form
+file
+0
+
+
+add
+
+Criterio_4
+dir
+
+Criterio_5
+dir
+
+LoginDialog.java
+file
+
+
+
+
+2012-10-29T18:48:51.453125Z
+1c3d8980683a47ae86a0535207ad80cd
+2012-10-29T10:48:03.015625Z
+3052
+Pedro
+
+nomencladores
+dir
+
+
+
+add
+
+LoginDialog.form
+file
+
+
+
+
+2012-10-29T18:48:51.468750Z
+5b0e0e3cd17df870a32bfb688cf427c3
+2012-10-29T10:48:03.015625Z
+3052
+Pedro
+

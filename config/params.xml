@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<params>
+	<host value="localhost"></host>
+	<port value ="5432"></port>
+	<name value="cif"></name>
+	<user value="postgres"></user>
+	<passw value="postgres"></passw>
+</params>

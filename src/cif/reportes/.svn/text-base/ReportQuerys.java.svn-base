@@ -1,0 +1,375 @@
+package cif.reportes;
+
+/**
+ *
+ * @author Raisel
+ */
+public class ReportQuerys
+{
+ public static final String ENTIDAD_AREAS_PROTEGIDAS                        = "Áreas Protegidas";
+ public static final String ENTIDAD_UNIDADES_SILVICOLAS                     = "Unidades Silvícolas";
+ public static final String ENTIDAD_OTROS                                   = "Otros";
+
+ public static final String BOSQUES_NATURALES_COLUMN_NAME                   = "bosques_nat";
+ public static final String PLANTACIONES_COLUMN_NAME                        = "plantacion_estb";
+ public static final String PROVINCIAS_COLUMN_NAME                          = "Provincia";
+ public static final String MUNICIPIOS_COLUMN_NAME                          = "Municipio";
+ public static final String TIPOENTIDAD_COLUMN_NAME                         = "Tipo de entidad";
+ public static final String SUP_GEOGRAFICA_COLUMN_NAME                      = "Superficie_Geog";
+ public static final String BOSQUE_RALO_COLUMN_NAME                         = "Bosque_ralo";
+ public static final String CALVERO_COLUMN_NAME                             = "Calvero";
+ public static final String LUGAR_TALADO_COLUMN_NAME                        = "Lugar_talado";
+ public static final String PLANT_JOVEN_COLUMN_NAME                         = "Plantac_joven";
+ public static final String PLANT_MONTES_MUERTOS_COLUMN_NAME                = "Plantac_montes_muertos";
+ public static final String SUPERFICIE_QUEMADA_COLUMN_NAME                  = "Superf_quemada";
+ public static final String XEROFILO_MOGOTES_COLUMN_NAME                    = "Xerofilo_mogote";
+ public static final String SUP_PLANTACION_COLUMN_NAME                      = "Superf_plant";
+ public static final String SUP_LOG_COLUMN_NAME                             = "Superf_log";
+ public static final String PLANTACIONES_VIVAS_COLUMN_NAME                  = "Plant_vivas";
+ public static final String PLANTACIONES_MUERTAS_COLUMN_NAME                = "plant_Muertas";
+ public static final String AREA_TALADA_DEF_COLUMN_NAME                     = "Area_tal_def";
+ public static final String AREA_QUEM_DEF_COLUMN_NAME                       = "Area_quem_def";
+ public static final String AREA_TALADA_COLUMN_NAME                         = "Area_tal";
+ public static final String AREA_ESTABLECIDA_COLUMN_NAME                    = "Area_establ";
+ public static final String CANTIDAD_COLUMN_NAME                            = "Cantidad";
+ public static final String DISTANCIA_RECORR_COLUMN_NAME                    = "Distanc_recorr";
+ public static final String SUP_AFECT_TOTAL_COLUMN_NAME                     = "Super_afect_tot";
+ public static final String ESPECIE_COLUMN_NAME                             = "Super_afect_tot";
+
+
+ 
+//====================== Criterio 1.1 TotalAreaCubierta =====================================================================================================================================================================
+ //----------------------------------------------------------------------------------
+     public static final String SQL_1_1_US                                 = "select municipios.nombre as municipio, anno as Año, bosques_nat, plantacion_estb from c1_1_us_totalareacubierta " +
+                                                                             "inner join municipios on c1_1_us_totalareacubierta.municipio=municipios.id where c1_1_us_totalareacubierta.id=':id' " +
+                                                                             "and anno=:anno" ;
+ //----------------------------------------------------------------------------------
+     public static final String SQL_1_1_AP                                 = "select municipios.nombre as municipio, anno as Año, bosques_nat, plantacion_estb from c1_1_ap_totalareacubierta inner join municipios " +
+                                                                             "on c1_1_ap_totalareacubierta.municipio=municipios.id " +
+                                                                             "where c1_1_ap_totalareacubierta.id=':id' and anno=:anno" ;
+//----------------------------------------------------------------------------------
+     public static final String SQL_1_1_EFI_Subgrupo                       = "select municipios.nombre as municipio, anno as Año, efi.nombre as EFi, usilvicola.nombre as \"Unidad_Silv.\", " +
+                                                                             "sum(bosques_nat) as "+BOSQUES_NATURALES_COLUMN_NAME+", sum(plantacion_estb) as "+PLANTACIONES_COLUMN_NAME+" " +
+                                                                             "from ((c1_1_us_totalareacubierta inner join usilvicola on c1_1_us_totalareacubierta.id=usilvicola.id) " +
+                                                                             "inner join efi on usilvicola.efi=efi.id)inner join municipios on c1_1_us_totalareacubierta.municipio=municipios.id " +
+                                                                             "where efi.id=':id' and anno=:anno group by municipios.nombre, anno, efi.nombre, usilvicola.nombre" ;
+
+     public static final String SQL_1_1_EFI_TOTAL                          = "select efi.nombre as efi, sum(bosques_nat) as "+BOSQUES_NATURALES_COLUMN_NAME+", sum(plantacion_estb) as "+PLANTACIONES_COLUMN_NAME+" " +
+                                                                             "from (c1_1_us_totalareacubierta inner join usilvicola on c1_1_us_totalareacubierta.id=usilvicola.id) " +
+                                                                             "inner join efi on usilvicola.efi=efi.id " +
+                                                                             "where efi.id=':id' and anno=:anno group by efi.nombre" ;
+//----------------------------------------------------------------------------------
+     public static final String SQL_1_1_OTROS                             = "select municipios.nombre as municipio, anno as Año, bosques_nat, plantacion_estb from c1_1_otros_totalareacubierta inner join municipios " +
+                                                                             "on c1_1_otros_totalareacubierta.municipio=municipios.id " +
+                                                                             "where c1_1_otros_totalareacubierta.id=':_id'" ;
+//----------------------------------------------------------------------------------
+ public static final String SQL_1_1_MUN_SubGrupoUS                         = "select provincias.nombre, municipios.nombre as municipio, sum(c1_1_us_totalareacubierta.bosques_nat), " +
+                                                                             "sum(c1_1_us_totalareacubierta.plantacion_estb) from (c1_1_us_totalareacubierta inner join municipios on " +
+                                                                             "c1_1_us_totalareacubierta.municipio=municipios.id) inner join provincias on municipios.provincia=provincias.id " +
+                                                                             "where municipios.id=':id' and anno=:anno group by provincias.nombre, municipios.nombre;" ;
+
+ public static final String SQL_1_1_MUN_SubGrupoAP                         = "select provincias.nombre, municipios.nombre as municipio, sum(c1_1_ap_totalareacubierta.bosques_nat), " +
+                                                                             "sum(c1_1_ap_totalareacubierta.plantacion_estb) from (c1_1_ap_totalareacubierta inner join municipios on " +
+                                                                             "c1_1_ap_totalareacubierta.municipio=municipios.id) inner join provincias on municipios.provincia=provincias.id " +
+                                                                             "where municipios.id=':id' and anno=:anno group by provincias.nombre, municipios.nombre;" ;
+
+ public static final String SQL_1_1_MUN_SubGrupoOTROS                     = "select provincias.nombre, municipios.nombre as municipio, sum(c1_1_otros_totalareacubierta.bosques_nat), " +
+                                                                             "sum(c1_1_otros_totalareacubierta.plantacion_estb) from (c1_1_otros_totalareacubierta inner join municipios on " +
+                                                                             "c1_1_otros_totalareacubierta.municipio=municipios.id) inner join provincias on municipios.provincia=provincias.id " +
+                                                                             "where municipios.id=':id' and anno=:anno group by provincias.nombre, municipios.nombre;" ;
+ //----------------------------------------------------------------------------------
+     public static final String SQL_1_1_PROV_SubGrupoUS                   = "select provincias.nombre, sum(c1_1_us_totalareacubierta.bosques_nat), " +
+                                                                             "sum(c1_1_us_totalareacubierta.plantacion_estb) from (c1_1_us_totalareacubierta inner join municipios on " +
+                                                                             "c1_1_us_totalareacubierta.municipio=municipios.id) inner join provincias on municipios.provincia=provincias.id " +
+                                                                             "where anno=:anno group by provincias.nombre;";
+
+     public static final String SQL_1_1_PROV_SubGrupoAP                   = "select provincias.nombre, sum(c1_1_ap_totalareacubierta.bosques_nat), " +
+                                                                             "sum(c1_1_ap_totalareacubierta.plantacion_estb) from (c1_1_ap_totalareacubierta inner join municipios on " +
+                                                                             "c1_1_ap_totalareacubierta.municipio=municipios.id) inner join provincias on municipios.provincia=provincias.id " +
+                                                                             "where anno=:anno group by provincias.nombre;";
+
+   public static final String SQL_1_1_PROV_SubGrupoOTROS                   = "select provincias.nombre, sum(c1_1_otros_totalareacubierta.bosques_nat), " +
+                                                                             "sum(c1_1_otros_totalareacubierta.plantacion_estb) from (c1_1_otros_totalareacubierta inner join municipios on " +
+                                                                             "c1_1_otros_totalareacubierta.municipio=municipios.id) inner join provincias on municipios.provincia=provincias.id " +
+                                                                             "where anno=:anno group by provincias.nombre;";
+    
+//====================== Criterio 1.2 Indice de Boscosidad =====================================================================================================================================================================
+  //----------------------------------------------------------------------------------
+   public static final String SQL_1_2_AP                                   = "select municipios.nombre as municipio, anno as Año, superficie_geog from c1_2_ap_indiceboscosidad inner join municipios " +
+                                                                             "on c1_2_ap_indiceboscosidad.municipio=municipios.id " +
+                                                                             "where c1_2_ap_indiceboscosidad.id=':id' and anno=:anno" ;
+  //----------------------------------------------------------------------------------
+   public static final String SQL_1_2_US                                   = "select municipios.nombre as municipio, anno as Año, superficie_geog from c1_2_us_indiceboscosidad inner join municipios " +
+                                                                             "on c1_2_us_indiceboscosidad.municipio=municipios.id " +
+                                                                             "where c1_2_us_indiceboscosidad.id=':id' and anno=:anno" ;
+  //----------------------------------------------------------------------------------
+   public static final String SQL_1_2_EFI_Subgrupo                         = "select municipios.nombre as municipio, anno as Año, efi.nombre as EFi, usilvicola.nombre as \"Unidad_Silv.\", " +
+                                                                             "sum(superficie_geog) as superficie_geog from ((c1_2_us_indiceboscosidad inner join usilvicola on c1_2_us_indiceboscosidad.id=usilvicola.id) " +
+                                                                             "inner join efi on usilvicola.efi=efi.id)inner join municipios on c1_2_us_indiceboscosidad.municipio=municipios.id " +
+                                                                             "where efi.id=':id' and anno=:anno group by municipios.nombre, anno, efi.nombre, usilvicola.nombre" ;
+
+   public static final String SQL_1_2_EFI_TOTAL                            = "select efi.nombre as efi, sum(superficie_geog) as superficie_geog from (c1_2_us_indiceboscosidad " +
+                                                                             "inner join usilvicola on c1_2_us_indiceboscosidad.id=usilvicola.id) inner join efi on usilvicola.efi=efi.id " +
+                                                                             "where efi.id=':id' and anno=:anno group by efi.nombre" ;
+  //----------------------------------------------------------------------------------
+   public static final String SQL_1_2_MUN_SubGrupoUS                       = "select provincias.nombre, municipios.nombre as municipio, sum(c1_2_us_indiceboscosidad.superficie_geog) " +
+                                                                             "from (c1_2_us_indiceboscosidad inner join municipios on " +
+                                                                             "c1_2_us_indiceboscosidad.municipio=municipios.id) inner join provincias on municipios.provincia=provincias.id " +
+                                                                             "where municipios.id=':id' and anno=:anno group by provincias.nombre, municipios.nombre;" ;
+
+   public static final String SQL_1_2_MUN_SubGrupoAP                       = "select provincias.nombre, municipios.nombre as municipio, sum(c1_2_ap_indiceboscosidad.superficie_geog) " +
+                                                                             "from (c1_2_ap_indiceboscosidad inner join municipios on " +
+                                                                             "c1_2_ap_indiceboscosidad.municipio=municipios.id) inner join provincias on municipios.provincia=provincias.id " +
+                                                                             "where municipios.id=':id' and anno=:anno group by provincias.nombre, municipios.nombre;" ;
+
+   public static final String SQL_1_2_MUN_SubGrupoOTROS                    = "select provincias.nombre, municipios.nombre as municipio, sum(c1_2_otros_indiceboscosidad.superficie_geog) " +
+                                                                             "from (c1_2_otros_indiceboscosidad inner join municipios on " +
+                                                                             "c1_2_otros_indiceboscosidad.municipio=municipios.id) inner join provincias on municipios.provincia=provincias.id " +
+                                                                             "where municipios.id=':id' and anno=:anno group by provincias.nombre, municipios.nombre;" ;
+  //----------------------------------------------------------------------------------
+   public static final String SQL_1_2_PROV_SubGrupoUS                      = "select provincias.nombre, sum(c1_2_us_indiceboscosidad.superficie_geog) " +
+                                                                             "from (c1_2_us_indiceboscosidad inner join municipios on " +
+                                                                             "c1_2_us_indiceboscosidad.municipio=municipios.id) inner join provincias on municipios.provincia=provincias.id " +
+                                                                             "where anno=:anno group by provincias.nombre;";
+
+   public static final String SQL_1_2_PROV_SubGrupoAP                      = "select provincias.nombre, sum(c1_2_ap_indiceboscosidad.superficie_geog) " +
+                                                                             "from (c1_2_ap_indiceboscosidad inner join municipios on " +
+                                                                             "c1_2_ap_indiceboscosidad.municipio=municipios.id) inner join provincias on municipios.provincia=provincias.id " +
+                                                                             "where anno=:anno group by provincias.nombre;";
+
+   public static final String SQL_1_2_PROV_SubGrupoOTROS                   = "select provincias.nombre, sum(c1_2_otros_indiceboscosidad.superficie_geog) " +
+                                                                             "from (c1_2_otros_indiceboscosidad inner join municipios on " +
+                                                                             "c1_2_otros_indiceboscosidad.municipio=municipios.id) inner join provincias on municipios.provincia=provincias.id " +
+                                                                             "where anno=:anno group by provincias.nombre;";
+
+ //====================== Criterio 1.3 Relacion TAC SCP =====================================================================================================================================================================
+  //----------------------------------------------------------------------------------
+   public static final String SQL_1_3_AP                                   = "select municipios.nombre as municipio, anno as Año, bosque_ralo, calvero, lugar_talado, plantac_joven, plantac_montes_muertos, " +
+                                                                             "superf_quemada, xerofilo_mogote from c1_3_ap_relaciontac_scp inner join municipios on c1_3_ap_relaciontac_scp.municipio=municipios.id " +
+                                                                             "where c1_3_ap_relaciontac_scp.id=':id' and anno=:anno" ;
+  //----------------------------------------------------------------------------------
+   public static final String SQL_1_3_US                                   = "select municipios.nombre as municipio, anno as Año, bosque_ralo, calvero, lugar_talado, plantac_joven, plantac_montes_muertos, " +
+                                                                             "superf_quemada, xerofilo_mogote from c1_3_us_relaciontac_scp inner join municipios on c1_3_us_relaciontac_scp.municipio=municipios.id " +
+                                                                             "where c1_3_us_relaciontac_scp.id=':id' and anno=:anno" ;
+  //----------------------------------------------------------------------------------
+   public static final String SQL_1_3_EFI_Subgrupo                         = "select municipios.nombre as municipio, anno as Año, efi.nombre as EFi, usilvicola.nombre as \"Unidad_Silv.\", " +
+                                                                             "sum(bosque_ralo) as bosque_ralo, sum(calvero) as calvero, sum(lugar_talado) as lugar_talado, sum(plantac_joven) as plantac_joven, " +
+                                                                             "sum(plantac_montes_muertos) as plantac_montes_muertos, sum(superf_quemada) as superf_quemada, sum(xerofilo_mogote) as xerofilo_mogote " +
+                                                                             "from ((c1_3_us_relaciontac_scp inner join usilvicola on c1_3_us_relaciontac_scp.id=usilvicola.id) " +
+                                                                             "inner join efi on usilvicola.efi=efi.id)inner join municipios on c1_3_us_relaciontac_scp.municipio=municipios.id " +
+                                                                             "where efi.id=':id' and anno=:anno group by municipios.nombre, anno, efi.nombre, usilvicola.nombre" ;
+
+   public static final String SQL_1_3_EFI_TOTAL                            = "select efi.nombre as efi, sum(bosque_ralo) as bosque_ralo, sum(calvero) as calvero, sum(lugar_talado) as lugar_talado, sum(plantac_joven) as plantac_joven, " +
+                                                                             "sum(plantac_montes_muertos) as plantac_montes_muertos, sum(superf_quemada) as superf_quemada, sum(xerofilo_mogote) as xerofilo_mogote " +
+                                                                             "from (c1_3_us_relaciontac_scp inner join usilvicola on c1_3_us_relaciontac_scp.id=usilvicola.id) inner join efi on usilvicola.efi=efi.id " +
+                                                                             "where efi.id=':id' and anno=:anno group by efi.nombre" ;
+  //----------------------------------------------------------------------------------
+   public static final String SQL_1_3_MUN_SubGrupoUS                       = "select provincias.nombre, municipios.nombre as municipio, sum(bosque_ralo), sum(calvero), sum(lugar_talado), sum(plantac_joven), " +
+                                                                             "sum(plantac_montes_muertos), sum(superf_quemada), sum(xerofilo_mogote) from (c1_3_us_relaciontac_scp inner join municipios on " +
+                                                                             "c1_3_us_relaciontac_scp.municipio=municipios.id) inner join provincias on municipios.provincia=provincias.id " +
+                                                                             "where municipios.id=':id' and anno=:anno group by provincias.nombre, municipios.nombre;";
+
+   public static final String SQL_1_3_MUN_SubGrupoAP                       = "select provincias.nombre, municipios.nombre as municipio, sum(bosque_ralo), sum(calvero), sum(lugar_talado), sum(plantac_joven), " +
+                                                                             "sum(plantac_montes_muertos), sum(superf_quemada), sum(xerofilo_mogote) from (c1_3_ap_relaciontac_scp inner join municipios on " +
+                                                                             "c1_3_ap_relaciontac_scp.municipio=municipios.id) inner join provincias on municipios.provincia=provincias.id " +
+                                                                             "where municipios.id=':id' and anno=:anno group by provincias.nombre, municipios.nombre;";
+
+   public static final String SQL_1_3_MUN_SubGrupoOTROS                    = "select provincias.nombre, municipios.nombre as municipio, sum(bosque_ralo), sum(calvero), sum(lugar_talado), sum(plantac_joven), " +
+                                                                             "sum(plantac_montes_muertos), sum(superf_quemada), sum(xerofilo_mogote) from (c1_3_otros_relaciontac_scp inner join municipios on " +
+                                                                             "c1_3_otros_relaciontac_scp.municipio=municipios.id) inner join provincias on municipios.provincia=provincias.id " +
+                                                                             "where municipios.id=':id' and anno=:anno group by provincias.nombre, municipios.nombre;";
+  //----------------------------------------------------------------------------------
+   public static final String SQL_1_3_PROV_SubGrupoUS                      = "select provincias.nombre, sum(bosque_ralo), sum(calvero), sum(lugar_talado), sum(plantac_joven), " +
+                                                                             "sum(plantac_montes_muertos), sum(superf_quemada), sum(xerofilo_mogote) from (c1_3_us_relaciontac_scp inner join municipios on " +
+                                                                             "c1_3_us_relaciontac_scp.municipio=municipios.id) inner join provincias on municipios.provincia=provincias.id " +
+                                                                             "where anno=:anno group by provincias.nombre;";
+
+   public static final String SQL_1_3_PROV_SubGrupoAP                      = "select provincias.nombre, sum(bosque_ralo), sum(calvero), sum(lugar_talado), sum(plantac_joven), " +
+                                                                             "sum(plantac_montes_muertos), sum(superf_quemada), sum(xerofilo_mogote) from (c1_3_ap_relaciontac_scp inner join municipios on " +
+                                                                             "c1_3_ap_relaciontac_scp.municipio=municipios.id) inner join provincias on municipios.provincia=provincias.id " +
+                                                                             "where anno=:anno group by provincias.nombre;";
+
+   public static final String SQL_1_3_PROV_SubGrupoOTROS                   = "select provincias.nombre, sum(bosque_ralo), sum(calvero), sum(lugar_talado), sum(plantac_joven), " +
+                                                                             "sum(plantac_montes_muertos), sum(superf_quemada), sum(xerofilo_mogote) from (c1_3_otros_relaciontac_scp inner join municipios on " +
+                                                                             "c1_3_otros_relaciontac_scp.municipio=municipios.id) inner join provincias on municipios.provincia=provincias.id " +
+                                                                             "where anno=:anno group by provincias.nombre;";
+   
+ //====================== Criterio 1.4 Efectividad de Plantaciones =====================================================================================================================================================================
+  //----------------------------------------------------------------------------------
+   public static final String SQL_1_4_AP                                   = "select municipios.nombre as municipio, anno as Año, superf_plant, superf_log, plant_vivas, plant_muertas, especie.nombre as especie " +
+                                                                             "from (c1_4_ap_efectividadplantaciones inner join municipios on c1_4_ap_efectividadplantaciones.municipio=municipios.id)inner join especie on " +
+                                                                             "c1_4_ap_efectividadplantaciones.especie=especie.id " +
+                                                                             "where c1_4_ap_efectividadplantaciones.id=':id' and anno=:anno";
+  //----------------------------------------------------------------------------------
+   public static final String SQL_1_4_US                                  = "select municipios.nombre as municipio, anno as Año, superf_plant, superf_log, plant_vivas, plant_muertas, especie.nombre as especie " +
+                                                                             "from (c1_4_us_efectividadplantaciones inner join municipios on c1_4_us_efectividadplantaciones.municipio=municipios.id)" +
+                                                                             "inner join especie on c1_4_us_efectividadplantaciones.especie=especie.id " +
+                                                                             "where c1_4_us_efectividadplantaciones.id=':id' and anno=:anno";
+  //----------------------------------------------------------------------------------
+   public static final String SQL_1_4_EFI_Subgrupo                         = "select municipios.nombre as municipio, anno as Año, efi.nombre as EFi, usilvicola.nombre as \"Unidad_Silv.\", " +
+                                                                             "sum(superf_plant) as superf_plant, sum(superf_log) as superf_log, sum(plant_vivas) as plant_vivas, sum(plant_muertas) as plant_muertas, especie.nombre as especie " +
+                                                                             "from (((c1_4_us_efectividadplantaciones inner join usilvicola on c1_4_us_efectividadplantaciones.id=usilvicola.id) " +
+                                                                             "inner join efi on usilvicola.efi=efi.id)inner join municipios on c1_4_us_efectividadplantaciones.municipio=municipios.id) " +
+                                                                             "inner join especie on c1_4_us_efectividadplantaciones.especie=especie.id " +
+                                                                             "where efi.id=':id' and anno=:anno group by municipios.nombre, anno, efi.nombre, usilvicola.nombre, especie.nombre";
+
+   public static final String SQL_1_4_EFI_TOTAL                            = "select efi.nombre as efi, sum(superf_plant), sum(superf_log), sum(plant_vivas), sum(plant_muertas) " +
+                                                                             "from (c1_4_us_efectividadplantaciones inner join usilvicola on c1_4_us_efectividadplantaciones.id=usilvicola.id) inner join efi on usilvicola.efi=efi.id " +
+                                                                             "where efi.id=':id' and anno=:anno group by efi.nombre";
+   //----------------------------------------------------------------------------------
+   public static final String SQL_1_4_MUN_SubGrupoUS                       = "select provincias.nombre, municipios.nombre as municipio, sum(superf_plant), sum(superf_log), sum(plant_vivas), sum(plant_muertas), especie.nombre " +
+                                                                             "from ((c1_4_us_efectividadplantaciones inner join municipios on " +
+                                                                             "c1_4_us_efectividadplantaciones.municipio=municipios.id) inner join provincias on municipios.provincia=provincias.id)" +
+                                                                             "inner join especie on c1_4_us_efectividadplantaciones.especie=especie.id " +
+                                                                             "where municipios.id=':id' and anno=:anno group by provincias.nombre, municipios.nombre, especie.nombre;" ;
+
+   public static final String SQL_1_4_MUN_SubGrupoAP                       = "select provincias.nombre, municipios.nombre as municipio, sum(superf_plant), sum(superf_log), sum(plant_vivas), sum(plant_muertas), especie.nombre " +
+                                                                             "from ((c1_4_ap_efectividadplantaciones inner join municipios on " +
+                                                                             "c1_4_ap_efectividadplantaciones.municipio=municipios.id) inner join provincias on municipios.provincia=provincias.id)" +
+                                                                             "inner join especie on c1_4_ap_efectividadplantaciones.especie=especie.id " +
+                                                                             "where municipios.id=':id' and anno=:anno group by provincias.nombre, municipios.nombre, especie.nombre;" ;
+
+  public static final String SQL_1_4_MUN_SubGrupoOTROS                     = "select provincias.nombre, municipios.nombre as municipio, sum(superf_plant), sum(superf_log), sum(plant_vivas), sum(plant_muertas), especie.nombre " +
+                                                                             "from ((c1_4_otros_efectividadplantaciones inner join municipios on " +
+                                                                             "c1_4_otros_efectividadplantaciones.municipio=municipios.id) inner join provincias on municipios.provincia=provincias.id)" +
+                                                                             "inner join especie on c1_4_otros_efectividadplantaciones.especie=especie.id " +
+                                                                             "where municipios.id=':id' and anno=:anno group by provincias.nombre, municipios.nombre, especie.nombre;" ;
+  //----------------------------------------------------------------------------------
+   public static final String SQL_1_4_PROV_SubGrupoUS                      = "select provincias.nombre, sum(superf_plant), sum(superf_log), sum(plant_vivas), sum(plant_muertas) " +
+                                                                              "from (c1_4_us_efectividadplantaciones inner join municipios on " +
+                                                                             "c1_4_us_efectividadplantaciones.municipio=municipios.id) inner join provincias on municipios.provincia=provincias.id " +
+                                                                             "where anno=:anno group by provincias.nombre;";
+
+   public static final String SQL_1_4_PROV_SubGrupoAP                      = "select provincias.nombre, sum(superf_plant), sum(superf_log), sum(plant_vivas), sum(plant_muertas) " +
+                                                                             "from (c1_4_ap_efectividadplantaciones inner join municipios on " +
+                                                                             "c1_4_ap_efectividadplantaciones.municipio=municipios.id) inner join provincias on municipios.provincia=provincias.id " +
+                                                                             "where anno=:anno group by provincias.nombre;";
+
+   public static final String SQL_1_4_PROV_SubGrupoOTROS                   = "select provincias.nombre, sum(superf_plant), sum(superf_log), sum(plant_vivas), sum(plant_muertas) " +
+                                                                             "from (c1_4_otros_efectividadplantaciones inner join municipios on " +
+                                                                             "c1_4_otros_efectividadplantaciones.municipio=municipios.id) inner join provincias on municipios.provincia=provincias.id " +
+                                                                             "where anno=:anno group by provincias.nombre;";
+   
+ //====================== Criterio 1.5 Areas Pendientes a Reforestar  =====================================================================================================================================================================
+  //----------------------------------------------------------------------------------
+   public static final String SQL_1_5_AP                                   = "select municipios.nombre as municipio, anno as Año, area_tal_def, area_quem_def, area_tal, area_establ " +
+                                                                             "from c1_5_ap_areaspendreforestar inner join municipios on c1_5_ap_areaspendreforestar.municipio=municipios.id " +
+                                                                             "where c1_5_ap_areaspendreforestar.id=':id' and anno=:anno" ;
+  //----------------------------------------------------------------------------------
+   public static final String SQL_1_5_US                                   = "select municipios.nombre as municipio, anno as Año,area_tal_def, area_quem_def, area_tal, area_establ " +
+                                                                             "from c1_5_us_areaspendreforestar inner join municipios on c1_5_us_areaspendreforestar.municipio=municipios.id " +
+                                                                             "where c1_5_us_areaspendreforestar.id=':id' and anno=:anno" ;
+  //----------------------------------------------------------------------------------
+   public static final String SQL_1_5_EFI_Subgrupo                         = "select municipios.nombre as municipio, anno as Año, efi.nombre as EFi, usilvicola.nombre as \"Unidad_Silv.\", " +
+                                                                             "sum(area_tal_def) as area_tal_def, sum(area_quem_def) as area_quem_def, sum(area_tal) as area_tal, sum(area_establ) as area_establ " +
+                                                                             "from ((c1_5_us_areaspendreforestar inner join usilvicola on c1_5_us_areaspendreforestar.id=usilvicola.id) " +
+                                                                             "inner join efi on usilvicola.efi=efi.id)inner join municipios on c1_5_us_areaspendreforestar.municipio=municipios.id " +
+                                                                             "where efi.id=':id' and anno=:anno group by municipios.nombre, anno, efi.nombre, usilvicola.nombre" ;
+
+   public static final String SQL_1_5_EFI_TOTAL                            = "select efi.nombre as efi, sum(area_tal_def) as area_tal_def, sum(area_quem_def) as area_quem_def, sum(area_tal) as area_tal, sum(area_establ) as area_establ " +
+                                                                             "from (c1_5_us_areaspendreforestar inner join usilvicola on c1_5_us_areaspendreforestar.id=usilvicola.id) inner join efi on usilvicola.efi=efi.id " +
+                                                                             "where efi.id=':id' and anno=:anno group by efi.nombre" ;
+  //----------------------------------------------------------------------------------
+   public static final String SQL_1_5_MUN_SubGrupoUS                       = "select provincias.nombre, municipios.nombre as municipio, sum(area_tal_def), sum(area_quem_def), sum(area_tal), sum(area_establ) " +
+                                                                             "from (c1_5_us_areaspendreforestar inner join municipios on " +
+                                                                             "c1_5_us_areaspendreforestar.municipio=municipios.id) inner join provincias on municipios.provincia=provincias.id " +
+                                                                             "where municipios.id=':id' and anno=:anno group by provincias.nombre, municipios.nombre;" ;
+
+   public static final String SQL_1_5_MUN_SubGrupoAP                       = "select provincias.nombre, municipios.nombre as municipio, sum(area_tal_def), sum(area_quem_def), sum(area_tal), sum(area_establ) " +
+                                                                             "from (c1_5_ap_areaspendreforestar inner join municipios on " +
+                                                                             "c1_5_ap_areaspendreforestar.municipio=municipios.id) inner join provincias on municipios.provincia=provincias.id " +
+                                                                             "where municipios.id=':id' and anno=:anno group by provincias.nombre, municipios.nombre;" ;
+
+   public static final String SQL_1_5_MUN_SubGrupoOTROS                    = "select provincias.nombre, municipios.nombre as municipio, sum(area_tal_def), sum(area_quem_def), sum(area_tal), sum(area_establ) " +
+                                                                             "from (c1_5_otros_areaspendreforestar inner join municipios on " +
+                                                                             "c1_5_otros_areaspendreforestar.municipio=municipios.id) inner join provincias on municipios.provincia=provincias.id " +
+                                                                             "where municipios.id=':id' and anno=:anno group by provincias.nombre, municipios.nombre;" ;
+  //----------------------------------------------------------------------------------
+   public static final String SQL_1_5_PROV_SubGrupoUS                      = "select provincias.nombre, sum(area_tal_def), sum(area_quem_def), sum(area_tal), sum(area_establ) " +
+                                                                              "from (c1_5_us_areaspendreforestar inner join municipios on " +
+                                                                             "c1_5_us_areaspendreforestar.municipio=municipios.id) inner join provincias on municipios.provincia=provincias.id " +
+                                                                             "where anno=:anno group by provincias.nombre;";
+
+   public static final String SQL_1_5_PROV_SubGrupoAP                      = "select provincias.nombre,sum(area_tal_def), sum(area_quem_def), sum(area_tal), sum(area_establ) " +
+                                                                             "from (c1_5_ap_areaspendreforestar inner join municipios on " +
+                                                                             "c1_5_ap_areaspendreforestar.municipio=municipios.id) inner join provincias on municipios.provincia=provincias.id " +
+                                                                             "where anno=:anno group by provincias.nombre;";
+
+   public static final String SQL_1_5_PROV_SubGrupoOTROS                   = "select provincias.nombre, sum(area_tal_def), sum(area_quem_def), sum(area_tal), sum(area_establ) " +
+                                                                             "from (c1_5_otros_areaspendreforestar inner join municipios on " +
+                                                                             "c1_5_otros_areaspendreforestar.municipio=municipios.id) inner join provincias on municipios.provincia=provincias.id " +
+                                                                             "where anno=:anno group by provincias.nombre;";
+
+  //====================== Criterio 2_1_1 Bosques Afectaciones Incendios =====================================================================================================================================================================
+  //----------------------------------------------------------------------------------
+   public static final String SQL_2_1_1_AP                                 = "select municipios.nombre as municipio, anno as Año, cantidad, distanc_recorr, super_afect_tot " +
+                                                                             "from c2_1_ap_bosquesafectinc inner join municipios on c2_1_ap_bosquesafectinc.municipio=municipios.id " +
+                                                                             "where c2_1_ap_bosquesafectinc.id=':id' and anno=:anno" ;
+  //----------------------------------------------------------------------------------
+   public static final String SQL_2_1_1_US                                 = "select municipios.nombre as municipio, anno as Año, cantidad, distanc_recorr, super_afect_tot " +
+                                                                             "from c2_1_us_bosquesafectinc inner join municipios on c2_1_us_bosquesafectinc.municipio=municipios.id " +
+                                                                             "where c2_1_us_bosquesafectinc.id=':id' and anno=:anno" ;
+  //----------------------------------------------------------------------------------
+   public static final String SQL_2_1_1_EFI_Subgrupo                       = "select municipios.nombre as municipio, anno as Año, efi.nombre as EFi, usilvicola.nombre as \"Unidad_Silv.\", " +
+                                                                             "sum(cantidad) as cantidad, sum(distanc_recorr) as distanc_recorr, sum(super_afect_tot) as super_afect_tot " +
+                                                                             "from ((c2_1_us_bosquesafectinc inner join usilvicola on c2_1_us_bosquesafectinc.id=usilvicola.id) " +
+                                                                             "inner join efi on usilvicola.efi=efi.id)inner join municipios on c2_1_us_bosquesafectinc.municipio=municipios.id " +
+                                                                             "where efi.id=':id' and anno=:anno group by municipios.nombre, anno, efi.nombre, usilvicola.nombre" ;
+
+   public static final String SQL_2_1_1_EFI_TOTAL                          = "select efi.nombre as efi, sum(cantidad), sum(distanc_recorr), sum(super_afect_tot) " +
+                                                                             "from (c2_1_us_bosquesafectinc inner join usilvicola on c2_1_us_bosquesafectinc.id=usilvicola.id) inner join efi on usilvicola.efi=efi.id " +
+                                                                             "where efi.id=':id' and anno=:anno group by efi.nombre" ;
+  //----------------------------------------------------------------------------------
+   public static final String SQL_2_1_1_MUN_SubGrupoUS                     = "select provincias.nombre, municipios.nombre as municipio, sum(cantidad), sum(distanc_recorr), sum(super_afect_tot) " +
+                                                                             "from (c2_1_us_bosquesafectinc inner join municipios on " +
+                                                                             "c2_1_us_bosquesafectinc.municipio=municipios.id) inner join provincias on municipios.provincia=provincias.id " +
+                                                                             "where municipios.id=':id' and anno=:anno group by provincias.nombre, municipios.nombre;";
+
+   public static final String SQL_2_1_1_MUN_SubGrupoAP                     = "select provincias.nombre, municipios.nombre as municipio, sum(cantidad), sum(distanc_recorr), sum(super_afect_tot) " +
+                                                                             "from (c2_1_ap_bosquesafectinc inner join municipios on " +
+                                                                             "c2_1_ap_bosquesafectinc.municipio=municipios.id) inner join provincias on municipios.provincia=provincias.id " +
+                                                                             "where municipios.id=':id' and anno=:anno group by provincias.nombre, municipios.nombre;";
+
+   public static final String SQL_2_1_1_MUN_SubGrupoOTROS                  = "select provincias.nombre, municipios.nombre as municipio, sum(cantidad), sum(distanc_recorr), sum(super_afect_tot) " +
+                                                                             "from (c2_1_otros_bosquesafectinc inner join municipios on " +
+                                                                             "c2_1_otros_bosquesafectinc.municipio=municipios.id) inner join provincias on municipios.provincia=provincias.id " +
+                                                                             "where municipios.id=':id' and anno=:anno group by provincias.nombre, municipios.nombre;";
+  //----------------------------------------------------------------------------------
+   public static final String SQL_2_1_1_PROV_SubGrupoUS                    = "select provincias.nombre, sum(cantidad), sum(distanc_recorr), sum(super_afect_tot) " +
+                                                                             "from (c2_1_us_bosquesafectinc inner join municipios on " +
+                                                                             "c2_1_us_bosquesafectinc.municipio=municipios.id) inner join provincias on municipios.provincia=provincias.id " +
+                                                                             "where anno=:anno group by provincias.nombre;";
+
+   public static final String SQL_2_1_1_PROV_SubGrupoAP                    = "select provincias.nombre, sum(cantidad), sum(distanc_recorr), sum(super_afect_tot) " +
+                                                                             "from (c2_1_ap_bosquesafectinc inner join municipios on " +
+                                                                             "c2_1_ap_bosquesafectinc.municipio=municipios.id) inner join provincias on municipios.provincia=provincias.id " +
+                                                                             "where anno=:anno group by provincias.nombre;";
+
+   public static final String SQL_2_1_1_PROV_SubGrupoOTROS                 = "select provincias.nombre, sum(cantidad), sum(distanc_recorr), sum(super_afect_tot) " +
+                                                                             "from (c2_1_otros_bosquesafectinc inner join municipios on " +
+                                                                             "c2_1_otros_bosquesafectinc.municipio=municipios.id) inner join provincias on municipios.provincia=provincias.id " +
+                                                                             "where anno=:anno group by provincias.nombre;";
+
+ //====================== Criterio 2_1_2 Incendios Especies =====================================================================================================================================================================
+  //----------------------------------------------------------------------------------
+   public static final String SQL_2_1_2_AP                                 = "select municipios.nombre as municipio, anno as Año, perd_direc, perd_indir, hectar_perd, especie.nombre as especie " +
+                                                                             "from (c2_1_ap_incespecie inner join municipios on c2_1_ap_incespecie.municipio=municipios.id)inner join especie on " +
+                                                                             "c2_1_ap_incespecie.especie=especie.id " +
+                                                                             "where c2_1_ap_incespecie.id=':id' and anno=:anno";
+  //----------------------------------------------------------------------------------
+   public static final String SQL_2_1_2_US                                 = "select municipios.nombre as municipio, anno as Año, perd_direc, perd_indir, hectar_perd, especie.nombre as especie " +
+                                                                             "from (c2_1_us_incespecie inner join municipios on c2_1_us_incespecie.municipio=municipios.id)" +
+                                                                             "inner join especie on c2_1_us_incespecie.especie=especie.id " +
+                                                                             "where c2_1_us_incespecie.id=':id' and anno=:anno";
+  //----------------------------------------------------------------------------------
+   public static final String SQL_2_1_2_EFI_Subgrupo                       = "select municipios.nombre as municipio, anno as Año, efi.nombre as EFi, usilvicola.nombre as \"Unidad_Silv.\", " +
+                                                                             "sum(perd_direc) as perd_direc, sum(perd_indir) as perd_indir, sum(hectar_perd) as hectar_perd, especie.nombre as especie " +
+                                                                             "from (((c2_1_us_incespecie inner join usilvicola on c2_1_us_incespecie.id=usilvicola.id) " +
+                                                                             "inner join efi on usilvicola.efi=efi.id)inner join municipios on c2_1_us_incespecie.municipio=municipios.id) " +
+                                                                             "inner join especie on c2_1_us_incespecie.especie=especie.id " +
+                                                                             "where efi.id=':id' and anno=:anno group by municipios.nombre, anno, efi.nombre, usilvicola.nombre, especie.nombre";
+
+   public static final String SQL_2_1_2_EFI_TOTAL                          = "select efi.nombre as efi, sum(perd_direc), sum(perd_indir), sum(hectar_perd) " +
+                                                                             "from (c2_1_us_incespecie inner join usilvicola on c2_1_us_incespecie.id=usilvicola.id) inner join efi on usilvicola.efi=efi.id " +
+                                                                             "where efi.id=':id' and anno=:anno group by efi.nombre";
+}

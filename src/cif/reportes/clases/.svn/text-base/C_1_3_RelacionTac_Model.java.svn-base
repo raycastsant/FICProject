@@ -1,0 +1,643 @@
+package cif.reportes.clases;
+
+import cif.bd.DBAccess;
+import cif.manage.User;
+import cif.manage.UserTypes;
+import cif.reportes.ReportQuerys;
+import java.sql.SQLException;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
+/**
+ *
+ * @author Raisel
+ */
+public class C_1_3_RelacionTac_Model extends AbstractCritReport
+{
+    public TableModel getModel(User user, Integer anno, boolean desglose) throws SQLException
+    {
+     return getReportModel(user, anno, desglose);
+    }
+
+    @Override
+    protected TableModel getModel_US()
+    {
+      String sql = getSQLReplacement(ReportQuerys.SQL_1_3_US, user.getIdEntidad(), anno.toString());
+      db.executeQueryUperCase(sql);
+
+      return db;
+    }
+
+    @Override
+    protected TableModel getModel_AP()
+    {
+      String sql = getSQLReplacement(ReportQuerys.SQL_1_3_AP, user.getIdEntidad(), anno.toString());
+      db.executeQueryUperCase(sql);
+
+      return db;
+    }
+
+    @Override
+    protected TableModel getModel_EFI()
+    {
+        DefaultTableModel deftm = new DefaultTableModel();
+
+        String sql = getSQLReplacement(ReportQuerys.SQL_1_3_EFI_Subgrupo, user.getIdEntidad(), anno.toString());
+
+        db.executeQueryUperCase(sql);
+        if(!db.isEmpty())
+        {
+         deftm = new javax.swing.table.DefaultTableModel(db.getAllRows(), db.getColumnNames());
+
+         sql = getSQLReplacement(ReportQuerys.SQL_1_3_EFI_TOTAL, user.getIdEntidad(), anno.toString());
+         db.executeQuery(sql);
+
+         Object []row = new String []{"TOTAL","","","", db.getValueAt(0,1).toString(), db.getValueAt(0,2).toString(),
+                                         db.getValueAt(0,3).toString(), db.getValueAt(0,4).toString(),
+                                         db.getValueAt(0,5).toString(), db.getValueAt(0,6).toString(), db.getValueAt(0,7).toString()};
+         deftm.addRow(row);
+        }
+
+        return deftm;
+    }
+
+    @Override
+    protected TableModel getModel_MUN()
+    {
+           String prov = "";
+           String mun = "";
+           String br = "";
+           String cv = "";
+           String lt = "";
+           String pj = "";
+           String pltmm = "";
+           String sq = "";
+           String xm = "";
+           String tipoEntidad = "";
+           Object []row = null;
+           Object []columNames = new String[]{ReportQuerys.PROVINCIAS_COLUMN_NAME, ReportQuerys.MUNICIPIOS_COLUMN_NAME, ReportQuerys.TIPOENTIDAD_COLUMN_NAME,
+                                              ReportQuerys.BOSQUE_RALO_COLUMN_NAME, ReportQuerys.CALVERO_COLUMN_NAME, ReportQuerys.LUGAR_TALADO_COLUMN_NAME, ReportQuerys.PLANT_JOVEN_COLUMN_NAME,
+                                              ReportQuerys.PLANT_MONTES_MUERTOS_COLUMN_NAME, ReportQuerys.SUPERFICIE_QUEMADA_COLUMN_NAME, ReportQuerys.XEROFILO_MOGOTES_COLUMN_NAME};
+           DefaultTableModel deftm= new DefaultTableModel(columNames, 0);
+           Double totBr = new Double(0);
+           Double totCv = new Double(0);
+           Double totLt = new Double(0);
+           Double totPj = new Double(0);
+           Double totPltmm = new Double(0);
+           Double totSq = new Double(0);
+           Double totXm = new Double(0);
+
+           String sql = getSQLReplacement(ReportQuerys.SQL_1_3_MUN_SubGrupoUS, user.getIdEntidad(), anno.toString());
+           db.executeQuery(sql);
+           if(!db.isEmpty())
+           {
+               prov = db.getValueAt(0,0).toString();
+               mun = db.getValueAt(0,1).toString();
+               br = db.getValueAt(0,2).toString();
+               cv = db.getValueAt(0,3).toString();
+               lt = db.getValueAt(0,4).toString();
+               pj = db.getValueAt(0,5).toString();
+               pltmm = db.getValueAt(0,6).toString();
+               sq = db.getValueAt(0,7).toString();
+               xm = db.getValueAt(0,8).toString();
+               tipoEntidad = ReportQuerys.ENTIDAD_UNIDADES_SILVICOLAS;
+               row = new String []{prov, mun, tipoEntidad, br, cv, lt, pj, pltmm, sq, xm};
+               deftm.addRow(row);
+
+               totBr += Double.parseDouble(br);
+               totCv += Double.parseDouble(cv);
+               totLt += Double.parseDouble(lt);
+               totPj += Double.parseDouble(pj);
+               totPltmm += Double.parseDouble(pltmm);
+               totSq += Double.parseDouble(sq);
+               totXm += Double.parseDouble(xm);
+           }
+
+           sql = getSQLReplacement(ReportQuerys.SQL_1_3_MUN_SubGrupoAP, user.getIdEntidad(), anno.toString());
+           db.executeQuery(sql);
+           if(!db.isEmpty())
+           {
+               prov = db.getValueAt(0,0).toString();
+               mun = db.getValueAt(0,1).toString();
+               br = db.getValueAt(0,2).toString();
+               cv = db.getValueAt(0,3).toString();
+               lt = db.getValueAt(0,4).toString();
+               pj = db.getValueAt(0,5).toString();
+               pltmm = db.getValueAt(0,6).toString();
+               sq = db.getValueAt(0,7).toString();
+               xm = db.getValueAt(0,8).toString();
+               tipoEntidad = ReportQuerys.ENTIDAD_AREAS_PROTEGIDAS;
+               row = new String []{prov, mun, tipoEntidad, br, cv, lt, pj, pltmm, sq, xm};
+               deftm.addRow(row);
+
+               totBr += Double.parseDouble(br);
+               totCv += Double.parseDouble(cv);
+               totLt += Double.parseDouble(lt);
+               totPj += Double.parseDouble(pj);
+               totPltmm += Double.parseDouble(pltmm);
+               totSq += Double.parseDouble(sq);
+               totXm += Double.parseDouble(xm);
+           }
+
+           sql = getSQLReplacement(ReportQuerys.SQL_1_3_MUN_SubGrupoOTROS, user.getIdEntidad(), anno.toString());
+           db.executeQuery(sql);
+           if(!db.isEmpty())
+           {
+               prov = db.getValueAt(0,0).toString();
+               mun = db.getValueAt(0,1).toString();
+               br = db.getValueAt(0,2).toString();
+               cv = db.getValueAt(0,3).toString();
+               lt = db.getValueAt(0,4).toString();
+               pj = db.getValueAt(0,5).toString();
+               pltmm = db.getValueAt(0,6).toString();
+               sq = db.getValueAt(0,7).toString();
+               xm = db.getValueAt(0,8).toString();
+               tipoEntidad = ReportQuerys.ENTIDAD_OTROS;
+               row = new String []{prov, mun, tipoEntidad, br, cv, lt, pj, pltmm, sq, xm};
+               deftm.addRow(row);
+
+               totBr += Double.parseDouble(br);
+               totCv += Double.parseDouble(cv);
+               totLt += Double.parseDouble(lt);
+               totPj += Double.parseDouble(pj);
+               totPltmm += Double.parseDouble(pltmm);
+               totSq += Double.parseDouble(sq);
+               totXm += Double.parseDouble(xm);
+           }
+
+           row = new String []{"TOTAL", "", "", totBr.toString(), totCv.toString(), totLt.toString(),
+                               totPj.toString(), totPltmm.toString(), totSq.toString(), totXm.toString()};
+           deftm.addRow(row);
+
+           return deftm;
+    }
+
+    @Override
+    protected TableModel getModel_PROV()
+    {
+       Object []row = null;
+       Object []columNames = new String[]{ReportQuerys.PROVINCIAS_COLUMN_NAME, ReportQuerys.MUNICIPIOS_COLUMN_NAME,
+                                          ReportQuerys.BOSQUE_RALO_COLUMN_NAME, ReportQuerys.CALVERO_COLUMN_NAME, ReportQuerys.LUGAR_TALADO_COLUMN_NAME, ReportQuerys.PLANT_JOVEN_COLUMN_NAME,
+                                          ReportQuerys.PLANT_MONTES_MUERTOS_COLUMN_NAME, ReportQuerys.SUPERFICIE_QUEMADA_COLUMN_NAME, ReportQuerys.XEROFILO_MOGOTES_COLUMN_NAME};
+       DefaultTableModel deftm= new DefaultTableModel(columNames, 0);
+
+       Totals rowTotals = new Totals(0,0,0,0,0,0,0);
+
+       rowTotals = updateProvincia_MunRow(ReportQuerys.SQL_1_3_MUN_SubGrupoUS, user.getIdEntidad(), anno.toString(), deftm, rowTotals);
+
+       rowTotals = updateProvincia_MunRow(ReportQuerys.SQL_1_3_MUN_SubGrupoAP, user.getIdEntidad(), anno.toString(), deftm, rowTotals);
+
+       rowTotals = updateProvincia_MunRow(ReportQuerys.SQL_1_3_MUN_SubGrupoOTROS, user.getIdEntidad(), anno.toString(), deftm, rowTotals);
+
+       row = new String []{"TOTAL", "", rowTotals.totBr.toString(), rowTotals.totCv.toString(), rowTotals.totLt.toString(),
+                           rowTotals.totPj.toString(), rowTotals.totPltmm.toString(), rowTotals.totSq.toString(), rowTotals.totXm.toString()};
+       deftm.addRow(row);
+
+       return deftm;
+    }
+
+    @Override
+    protected TableModel getModel_PROV_DESGLOSE()
+    {
+       Object []row = null;
+       Object []columNames = new String[]{ReportQuerys.PROVINCIAS_COLUMN_NAME, ReportQuerys.MUNICIPIOS_COLUMN_NAME, ReportQuerys.TIPOENTIDAD_COLUMN_NAME,
+                                              ReportQuerys.BOSQUE_RALO_COLUMN_NAME, ReportQuerys.CALVERO_COLUMN_NAME, ReportQuerys.LUGAR_TALADO_COLUMN_NAME, ReportQuerys.PLANT_JOVEN_COLUMN_NAME,
+                                              ReportQuerys.PLANT_MONTES_MUERTOS_COLUMN_NAME, ReportQuerys.SUPERFICIE_QUEMADA_COLUMN_NAME, ReportQuerys.XEROFILO_MOGOTES_COLUMN_NAME};
+       DefaultTableModel deftm= new DefaultTableModel(columNames, 0);
+
+       Totals rowTotals = new Totals(0,0,0,0,0,0,0);
+
+       rowTotals = updateProvincia_DesgloseRow(ReportQuerys.SQL_1_3_MUN_SubGrupoUS, user.getIdEntidad(), anno.toString(), deftm, rowTotals, ReportQuerys.ENTIDAD_UNIDADES_SILVICOLAS);
+
+       rowTotals = updateProvincia_DesgloseRow(ReportQuerys.SQL_1_3_MUN_SubGrupoAP, user.getIdEntidad(), anno.toString(), deftm, rowTotals, ReportQuerys.ENTIDAD_AREAS_PROTEGIDAS);
+
+       rowTotals = updateProvincia_DesgloseRow(ReportQuerys.SQL_1_3_MUN_SubGrupoOTROS, user.getIdEntidad(), anno.toString(), deftm, rowTotals, ReportQuerys.ENTIDAD_OTROS);
+
+       row = new String []{"TOTAL", "", "", rowTotals.totBr.toString(), rowTotals.totCv.toString(), rowTotals.totLt.toString(),
+                           rowTotals.totPj.toString(), rowTotals.totPltmm.toString(), rowTotals.totSq.toString(), rowTotals.totXm.toString()};
+       deftm.addRow(row);
+
+       return deftm;
+    }
+
+    @Override
+    protected TableModel getModel_NAC()
+    {
+       Object []row = null;
+       Object []columNames = new String[]{ReportQuerys.PROVINCIAS_COLUMN_NAME, ReportQuerys.BOSQUE_RALO_COLUMN_NAME, ReportQuerys.CALVERO_COLUMN_NAME,
+                                          ReportQuerys.LUGAR_TALADO_COLUMN_NAME, ReportQuerys.PLANT_JOVEN_COLUMN_NAME, ReportQuerys.PLANT_MONTES_MUERTOS_COLUMN_NAME,
+                                          ReportQuerys.SUPERFICIE_QUEMADA_COLUMN_NAME, ReportQuerys.XEROFILO_MOGOTES_COLUMN_NAME};
+       DefaultTableModel deftm= new DefaultTableModel(columNames, 0);
+
+       Totals rowTotals = new Totals(0,0,0,0,0,0,0);
+
+       rowTotals = updateProvinciaRow(ReportQuerys.SQL_1_3_PROV_SubGrupoUS, anno.toString(), deftm, rowTotals);
+
+       rowTotals = updateProvinciaRow(ReportQuerys.SQL_1_3_PROV_SubGrupoAP, anno.toString(), deftm, rowTotals);
+
+       rowTotals = updateProvinciaRow(ReportQuerys.SQL_1_3_PROV_SubGrupoOTROS, anno.toString(), deftm, rowTotals);
+
+       row = new String []{"TOTAL", rowTotals.totBr.toString(), rowTotals.totCv.toString(), rowTotals.totLt.toString(),
+                           rowTotals.totPj.toString(), rowTotals.totPltmm.toString(), rowTotals.totSq.toString(), rowTotals.totXm.toString()};
+       deftm.addRow(row);
+
+       return deftm;
+    }
+
+    @Override
+    protected TableModel getModel_NAC_DESGLOSE()
+    {
+       Object []row = null;
+       Object []columNames = new String[]{ReportQuerys.PROVINCIAS_COLUMN_NAME, ReportQuerys.MUNICIPIOS_COLUMN_NAME, ReportQuerys.TIPOENTIDAD_COLUMN_NAME,
+                                              ReportQuerys.BOSQUE_RALO_COLUMN_NAME, ReportQuerys.CALVERO_COLUMN_NAME, ReportQuerys.LUGAR_TALADO_COLUMN_NAME, ReportQuerys.PLANT_JOVEN_COLUMN_NAME,
+                                              ReportQuerys.PLANT_MONTES_MUERTOS_COLUMN_NAME, ReportQuerys.SUPERFICIE_QUEMADA_COLUMN_NAME, ReportQuerys.XEROFILO_MOGOTES_COLUMN_NAME};
+       DefaultTableModel deftm= new DefaultTableModel(columNames, 0);
+
+       Totals rowTotals = new Totals(0,0,0,0,0,0,0);
+
+       rowTotals = updateDNF_DesgloseRow(ReportQuerys.SQL_1_3_MUN_SubGrupoUS, anno.toString(), deftm, rowTotals, ReportQuerys.ENTIDAD_UNIDADES_SILVICOLAS);
+
+       rowTotals = updateDNF_DesgloseRow(ReportQuerys.SQL_1_3_MUN_SubGrupoAP, anno.toString(), deftm, rowTotals, ReportQuerys.ENTIDAD_AREAS_PROTEGIDAS);
+
+       rowTotals = updateDNF_DesgloseRow(ReportQuerys.SQL_1_3_MUN_SubGrupoOTROS, anno.toString(), deftm, rowTotals, ReportQuerys.ENTIDAD_OTROS);
+
+       row = new String []{"TOTAL", "", "", rowTotals.totBr.toString(), rowTotals.totCv.toString(), rowTotals.totLt.toString(),
+                           rowTotals.totPj.toString(), rowTotals.totPltmm.toString(), rowTotals.totSq.toString(), rowTotals.totXm.toString()};
+       deftm.addRow(row);
+
+       return deftm;
+    }
+
+    private Totals updateProvincia_MunRow(String SqlPattern, String Entidad, String anno, DefaultTableModel dftm, Totals tot)// BrCount, double CvCount, double LtCount, double PjCount, double PltmmCount, double SqCount, double XmCount)
+    {
+       String prov = "";
+       String mun = "";
+       Double br = new Double(0);
+       Double cv = new Double(0);
+       Double lt = new Double(0);
+       Double pj = new Double(0);
+       Double pltmm = new Double(0);
+       Double sq = new Double(0);
+       Double xm = new Double(0);
+       Object []row = null;
+
+       Double totBr = tot.totBr;
+       Double totCv = tot.totCv;
+       Double totLt = tot.totLt;
+       Double totPj = tot.totPj;
+       Double totPltmm = tot.totPltmm;
+       Double totSq = tot.totSq;
+       Double totXm = tot.totXm;
+
+       String sql = SqlPattern.replaceFirst("where municipios.id", "where provincias.id");
+       sql = getSQLReplacement(sql, Entidad, anno);
+       db.executeQuery(sql);
+       if(!db.isEmpty())
+       {
+           for(int i=0; i<db.getRowCount(); i++)
+           {
+               boolean rowUpdated = false;
+               
+               prov = db.getValueAt(i,0).toString();
+               mun = db.getValueAt(i,1).toString();
+               br = Double.parseDouble(db.getValueAt(i,2).toString());
+               cv = Double.parseDouble(db.getValueAt(i,3).toString());
+               lt = Double.parseDouble(db.getValueAt(i,4).toString());
+               pj = Double.parseDouble(db.getValueAt(i,5).toString());
+               pltmm = Double.parseDouble(db.getValueAt(i,6).toString());
+               sq = Double.parseDouble(db.getValueAt(i,7).toString());
+               xm = Double.parseDouble(db.getValueAt(i,8).toString());
+               totBr += br;
+               totCv += cv;
+               totLt += lt;
+               totPj += pj;
+               totPltmm += pltmm;
+               totSq += sq;
+               totXm += xm;
+
+               if(dftm.getRowCount() > 0)
+               {
+                    String tmMun = "";
+                    for(int k=0; k<dftm.getRowCount(); k++)
+                    {
+                     tmMun = dftm.getValueAt(k,1).toString();
+                     if(tmMun.equals(mun))
+                     {
+                      double tempBr = Double.parseDouble(dftm.getValueAt(k,2).toString());
+                      double tempCv = Double.parseDouble(dftm.getValueAt(k,3).toString());
+                      double tempLt = Double.parseDouble(dftm.getValueAt(k,4).toString());
+                      double tempPj = Double.parseDouble(dftm.getValueAt(k,5).toString());
+                      double temppltmm = Double.parseDouble(dftm.getValueAt(k,6).toString());
+                      double tempSq = Double.parseDouble(dftm.getValueAt(k,7).toString());
+                      double tempXm = Double.parseDouble(dftm.getValueAt(k,8).toString());
+                      dftm.setValueAt((tempBr+br), k, 2);
+                      dftm.setValueAt((tempCv+cv), k, 3);
+                      dftm.setValueAt((tempLt+lt), k, 4);
+                      dftm.setValueAt((tempPj+pj), k, 5);
+                      dftm.setValueAt((temppltmm+pltmm), k, 6);
+                      dftm.setValueAt((tempSq+sq), k, 7);
+                      dftm.setValueAt((tempXm+xm), k, 8);
+                      rowUpdated = true;
+                      break;
+                     }
+                    }
+               }
+
+               if(!rowUpdated)
+               {
+                row = new String []{prov, mun, br.toString(), cv.toString(), lt.toString(), pj.toString(),
+                                    pltmm.toString(), sq.toString(), xm.toString()};
+                dftm.addRow(row);
+               }
+           }
+       }
+
+       return new Totals(totBr, totCv, totLt, totPj, totPltmm, totSq, totXm);
+   }
+
+    private Totals updateProvinciaRow(String SqlPattern, String anno, DefaultTableModel dftm, Totals tot)
+    {
+       String prov = "";
+       Double br = new Double(0);
+       Double cv = new Double(0);
+       Double lt = new Double(0);
+       Double pj = new Double(0);
+       Double pltmm = new Double(0);
+       Double sq = new Double(0);
+       Double xm = new Double(0);
+       Object []row = null;
+
+       Double totBr = tot.totBr;
+       Double totCv = tot.totCv;
+       Double totLt = tot.totLt;
+       Double totPj = tot.totPj;
+       Double totPltmm = tot.totPltmm;
+       Double totSq = tot.totSq;
+       Double totXm = tot.totXm;
+
+       String sql = getSQLReplacement(SqlPattern, anno);
+       db.executeQuery(sql);
+       if(!db.isEmpty())
+       {
+           for(int i=0; i<db.getRowCount(); i++)
+           {
+               boolean rowUpdated = false;
+
+               prov = db.getValueAt(i,0).toString();
+               br = Double.parseDouble(db.getValueAt(i,1).toString());
+               cv = Double.parseDouble(db.getValueAt(i,2).toString());
+               lt = Double.parseDouble(db.getValueAt(i,3).toString());
+               pj = Double.parseDouble(db.getValueAt(i,4).toString());
+               pltmm = Double.parseDouble(db.getValueAt(i,5).toString());
+               sq = Double.parseDouble(db.getValueAt(i,6).toString());
+               xm = Double.parseDouble(db.getValueAt(i,7).toString());
+               totBr += br;
+               totCv += cv;
+               totLt += lt;
+               totPj += pj;
+               totPltmm += pltmm;
+               totSq += sq;
+               totXm += xm;
+
+               if(dftm.getRowCount() > 0)
+               {
+                    String tmProv = "";
+                    for(int k=0; k<dftm.getRowCount(); k++)
+                    {
+                     tmProv = dftm.getValueAt(k,0).toString();
+                     if(tmProv.equals(prov))
+                     {
+                      double tempBr = Double.parseDouble(dftm.getValueAt(k,1).toString());
+                      double tempCv = Double.parseDouble(dftm.getValueAt(k,2).toString());
+                      double tempLt = Double.parseDouble(dftm.getValueAt(k,3).toString());
+                      double tempPj = Double.parseDouble(dftm.getValueAt(k,4).toString());
+                      double temppltmm = Double.parseDouble(dftm.getValueAt(k,5).toString());
+                      double tempSq = Double.parseDouble(dftm.getValueAt(k,6).toString());
+                      double tempXm = Double.parseDouble(dftm.getValueAt(k,7).toString());
+                      dftm.setValueAt((tempBr+br), k, 1);
+                      dftm.setValueAt((tempCv+cv), k, 2);
+                      dftm.setValueAt((tempLt+lt), k, 3);
+                      dftm.setValueAt((tempPj+pj), k, 4);
+                      dftm.setValueAt((temppltmm+pltmm), k, 5);
+                      dftm.setValueAt((tempSq+sq), k, 6);
+                      dftm.setValueAt((tempXm+xm), k, 7);
+                      rowUpdated = true;
+                      break;
+                     }
+                    }
+               }
+
+               if(!rowUpdated)
+               {
+                row = new String []{prov, br.toString(), cv.toString(), lt.toString(), pj.toString(),
+                                    pltmm.toString(), sq.toString(), xm.toString()};
+                dftm.addRow(row);
+               }
+           }
+       }
+
+       return new Totals(totBr, totCv, totLt, totPj, totPltmm, totSq, totXm);
+   }
+
+    private Totals updateProvincia_DesgloseRow(String SqlPattern, String Entidad, String anno, DefaultTableModel dftm, Totals tot, String tipoEntidad)
+    {
+       String prov = "";
+       String mun = "";
+       Double br = new Double(0);
+       Double cv = new Double(0);
+       Double lt = new Double(0);
+       Double pj = new Double(0);
+       Double pltmm = new Double(0);
+       Double sq = new Double(0);
+       Double xm = new Double(0);
+       Object []row = null;
+
+       Double totBr = tot.totBr;
+       Double totCv = tot.totCv;
+       Double totLt = tot.totLt;
+       Double totPj = tot.totPj;
+       Double totPltmm = tot.totPltmm;
+       Double totSq = tot.totSq;
+       Double totXm = tot.totXm;
+
+       String sql = SqlPattern.replaceFirst("where municipios.id", "where provincias.id");
+       sql = getSQLReplacement(sql, Entidad, anno);
+       db.executeQuery(sql);
+       if(!db.isEmpty())
+       {
+           for(int i=0; i<db.getRowCount(); i++)
+           {
+               boolean rowUpdated = false;
+               int rowIndex = dftm.getRowCount();
+
+               prov = db.getValueAt(i,0).toString();
+               mun = db.getValueAt(i,1).toString();
+               br = Double.parseDouble(db.getValueAt(i,2).toString());
+               cv = Double.parseDouble(db.getValueAt(i,3).toString());
+               lt = Double.parseDouble(db.getValueAt(i,4).toString());
+               pj = Double.parseDouble(db.getValueAt(i,5).toString());
+               pltmm = Double.parseDouble(db.getValueAt(i,6).toString());
+               sq = Double.parseDouble(db.getValueAt(i,7).toString());
+               xm = Double.parseDouble(db.getValueAt(i,8).toString());
+               totBr += br;
+               totCv += cv;
+               totLt += lt;
+               totPj += pj;
+               totPltmm += pltmm;
+               totSq += sq;
+               totXm += xm;
+
+               if(dftm.getRowCount() > 0)
+               {
+                    String tmMun = "";
+                    String tmEntidad = "";
+                    for(int k=0; k<dftm.getRowCount(); k++)
+                    {
+                     tmMun = dftm.getValueAt(k,1).toString();
+                     tmEntidad = dftm.getValueAt(k,2).toString();
+                     if((tmMun.equals(mun)) && (tmEntidad.equals(tipoEntidad)))
+                     {
+                      double tempBr = Double.parseDouble(dftm.getValueAt(k,3).toString());
+                      double tempCv = Double.parseDouble(dftm.getValueAt(k,4).toString());
+                      double tempLt = Double.parseDouble(dftm.getValueAt(k,5).toString());
+                      double tempPj = Double.parseDouble(dftm.getValueAt(k,6).toString());
+                      double temppltmm = Double.parseDouble(dftm.getValueAt(k,7).toString());
+                      double tempSq = Double.parseDouble(dftm.getValueAt(k,8).toString());
+                      double tempXm = Double.parseDouble(dftm.getValueAt(k,9).toString());
+                      dftm.setValueAt((tempBr+br), k, 3);
+                      dftm.setValueAt((tempCv+cv), k, 4);
+                      dftm.setValueAt((tempLt+lt), k, 5);
+                      dftm.setValueAt((tempPj+pj), k, 6);
+                      dftm.setValueAt((temppltmm+pltmm), k, 7);
+                      dftm.setValueAt((tempSq+sq), k, 8);
+                      dftm.setValueAt((tempXm+xm), k, 9);
+                      rowUpdated = true;
+                      break;
+                     }
+                     else
+                     if(tmMun.equals(mun))
+                     {
+                      rowIndex = k+1;
+                      break;
+                     }
+                    }
+               }
+
+               if(!rowUpdated)
+               {
+                row = new String []{prov, mun, tipoEntidad, br.toString(), cv.toString(), lt.toString(), pj.toString(),
+                                    pltmm.toString(), sq.toString(), xm.toString()};
+                dftm.insertRow(rowIndex, row);
+               }
+           }
+        }
+       
+       return new Totals(totBr, totCv, totLt, totPj, totPltmm, totSq, totXm);
+    }
+
+    private Totals updateDNF_DesgloseRow(String SqlPattern, String anno, DefaultTableModel dftm, Totals tot, String tipoEntidad)
+    {
+       String prov = "";
+       String mun = "";
+       Double br = new Double(0);
+       Double cv = new Double(0);
+       Double lt = new Double(0);
+       Double pj = new Double(0);
+       Double pltmm = new Double(0);
+       Double sq = new Double(0);
+       Double xm = new Double(0);
+       Object []row = null;
+
+       Double totBr = tot.totBr;
+       Double totCv = tot.totCv;
+       Double totLt = tot.totLt;
+       Double totPj = tot.totPj;
+       Double totPltmm = tot.totPltmm;
+       Double totSq = tot.totSq;
+       Double totXm = tot.totXm;
+
+       String sql = SqlPattern.replaceFirst("municipios.id=':id' and", "");
+       sql = getSQLReplacement(sql, anno);
+       db.executeQuery(sql);
+       if(!db.isEmpty())
+       {
+           for(int i=0; i<db.getRowCount(); i++)
+           {
+               prov = db.getValueAt(i,0).toString();
+               mun = db.getValueAt(i,1).toString();
+               br = Double.parseDouble(db.getValueAt(i,2).toString());
+               cv = Double.parseDouble(db.getValueAt(i,3).toString());
+               lt = Double.parseDouble(db.getValueAt(i,4).toString());
+               pj = Double.parseDouble(db.getValueAt(i,5).toString());
+               pltmm = Double.parseDouble(db.getValueAt(i,6).toString());
+               sq = Double.parseDouble(db.getValueAt(i,7).toString());
+               xm = Double.parseDouble(db.getValueAt(i,8).toString());
+               totBr += br;
+               totCv += cv;
+               totLt += lt;
+               totPj += pj;
+               totPltmm += pltmm;
+               totSq += sq;
+               totXm += xm;
+
+               int rowIndex = getProvincia_Mun_Ent_RowIndex(prov, mun, tipoEntidad, dftm);
+
+               if((rowIndex==0) && (dftm.getRowCount()<=0)) //agregar
+               {
+                row = new String []{prov, mun, tipoEntidad, br.toString(), cv.toString(), lt.toString(), pj.toString(),
+                                    pltmm.toString(), sq.toString(), xm.toString()};
+                dftm.addRow(row);
+               }
+               else
+               if(rowIndex >= 0) //insertar
+               {
+                row = new String []{prov, mun, tipoEntidad, br.toString(), cv.toString(), lt.toString(), pj.toString(),
+                                    pltmm.toString(), sq.toString(), xm.toString()};
+                dftm.insertRow((rowIndex+1), row);
+               }
+               else     //actualizar
+               {
+                      rowIndex = rowIndex*(-1);
+                      double tempBr = Double.parseDouble(dftm.getValueAt(rowIndex,3).toString());
+                      double tempCv = Double.parseDouble(dftm.getValueAt(rowIndex,4).toString());
+                      double tempLt = Double.parseDouble(dftm.getValueAt(rowIndex,5).toString());
+                      double tempPj = Double.parseDouble(dftm.getValueAt(rowIndex,6).toString());
+                      double temppltmm = Double.parseDouble(dftm.getValueAt(rowIndex,7).toString());
+                      double tempSq = Double.parseDouble(dftm.getValueAt(rowIndex,8).toString());
+                      double tempXm = Double.parseDouble(dftm.getValueAt(rowIndex,9).toString());
+                      dftm.setValueAt((tempBr+br), rowIndex, 3);
+                      dftm.setValueAt((tempCv+cv), rowIndex, 4);
+                      dftm.setValueAt((tempLt+lt), rowIndex, 5);
+                      dftm.setValueAt((tempPj+pj), rowIndex, 6);
+                      dftm.setValueAt((temppltmm+pltmm), rowIndex, 7);
+                      dftm.setValueAt((tempSq+sq), rowIndex, 8);
+                      dftm.setValueAt((tempXm+xm), rowIndex, 9);
+               }
+           }
+        }
+
+       return new Totals(totBr, totCv, totLt, totPj, totPltmm, totSq, totXm);
+    }
+
+    class Totals
+    {
+     Double totBr = new Double(0);
+     Double totCv = new Double(0);
+     Double totLt = new Double(0);
+     Double totPj = new Double(0);
+     Double totPltmm = new Double(0);
+     Double totSq = new Double(0);
+     Double totXm = new Double(0);
+
+     public Totals(double _totBr, double _totCv, double _totLt, double _totPj, double _totPltmm, double _totSq, double _totXm)
+     {
+      totBr = _totBr;
+      totCv = _totCv;
+      totLt = _totLt;
+      totPj = _totPj;
+      totPltmm = _totPltmm;
+      totSq = _totSq;
+      totXm = _totXm;
+     }
+    }
+}

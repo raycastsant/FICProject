@@ -1,0 +1,67 @@
+8
+
+dir
+3166
+https://192.168.10.23:8443/svn/BaseConocimiento/RepositorioProyectos/CIF/fuente/src/cif/reportes
+https://192.168.10.23:8443/svn/BaseConocimiento
+
+
+
+2012-11-01T10:45:41.078125Z
+3134
+Raisel
+
+
+svn:special svn:externals svn:needs-lock
+
+ReportSQLSentences.java
+file
+3216
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+deleted
+
+ReportQuerys.java
+file
+3219
+
+
+
+2012-12-20T14:03:48.726681Z
+d82f39212eeb6d646dcfe1594c62558d
+2012-12-20T12:09:22.921875Z
+3219
+Raisel
+
+ReportManager.java
+file
+3218
+
+
+
+2012-12-18T22:36:56.884130Z
+962d712a60cb1da0336f568db59b3b4c
+2012-12-19T20:57:07.156250Z
+3218
+Raisel
+
+clases
+dir
+

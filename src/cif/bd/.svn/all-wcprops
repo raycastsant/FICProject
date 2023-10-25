@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/BaseConocimiento/!svn/ver/3055/RepositorioProyectos/CIF/fuente/src/cif/bd
+END
+BDUtilities.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/BaseConocimiento/!svn/ver/3165/RepositorioProyectos/CIF/fuente/src/cif/bd/BDUtilities.java
+END
+JDBCAdapter.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/BaseConocimiento/!svn/ver/3052/RepositorioProyectos/CIF/fuente/src/cif/bd/JDBCAdapter.java
+END
+TableMap.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/BaseConocimiento/!svn/ver/3052/RepositorioProyectos/CIF/fuente/src/cif/bd/TableMap.java
+END
+TableSorter.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/BaseConocimiento/!svn/ver/3052/RepositorioProyectos/CIF/fuente/src/cif/bd/TableSorter.java
+END
+DBAccess.java
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/BaseConocimiento/!svn/ver/3055/RepositorioProyectos/CIF/fuente/src/cif/bd/DBAccess.java
+END
+ClassParams.java
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/BaseConocimiento/!svn/ver/3052/RepositorioProyectos/CIF/fuente/src/cif/bd/ClassParams.java
+END
+CollectionConnection.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/BaseConocimiento/!svn/ver/3052/RepositorioProyectos/CIF/fuente/src/cif/bd/CollectionConnection.java
+END
+DataAccess.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/BaseConocimiento/!svn/ver/3052/RepositorioProyectos/CIF/fuente/src/cif/bd/DataAccess.java
+END

@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/BaseConocimiento/!svn/ver/3170/RepositorioProyectos/CIF/fuente/src/cif/reportes/clases
+END
+AbstractCritReport.java
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/svn/BaseConocimiento/!svn/ver/3216/RepositorioProyectos/CIF/fuente/src/cif/reportes/clases/AbstractCritReport.java
+END
+C_2_1_2_IncendEspecie_Model.java
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/svn/BaseConocimiento/!svn/ver/3219/RepositorioProyectos/CIF/fuente/src/cif/reportes/clases/C_2_1_2_IncendEspecie_Model.java
+END
+IReportModel.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/BaseConocimiento/!svn/ver/3216/RepositorioProyectos/CIF/fuente/src/cif/reportes/clases/IReportModel.java
+END
+C_1_5_AreasPendReforestar_Model.java
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/svn/BaseConocimiento/!svn/ver/3218/RepositorioProyectos/CIF/fuente/src/cif/reportes/clases/C_1_5_AreasPendReforestar_Model.java
+END
+C_1_3_RelacionTac_Model.java
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/BaseConocimiento/!svn/ver/3218/RepositorioProyectos/CIF/fuente/src/cif/reportes/clases/C_1_3_RelacionTac_Model.java
+END
+C_2_1_1_BosquesAfectadosInc_Model.java
+K 25
+svn:wc:ra_dav:version-url
+V 130
+/svn/BaseConocimiento/!svn/ver/3218/RepositorioProyectos/CIF/fuente/src/cif/reportes/clases/C_2_1_1_BosquesAfectadosInc_Model.java
+END
+C_1_2_IndiceBoscosidad_Model.java
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/svn/BaseConocimiento/!svn/ver/3218/RepositorioProyectos/CIF/fuente/src/cif/reportes/clases/C_1_2_IndiceBoscosidad_Model.java
+END
+C_1_1_TotalAreaCubierta_Model.java
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/svn/BaseConocimiento/!svn/ver/3216/RepositorioProyectos/CIF/fuente/src/cif/reportes/clases/C_1_1_TotalAreaCubierta_Model.java
+END
+C_1_4_EfectividadPlantaciones_Model.java
+K 25
+svn:wc:ra_dav:version-url
+V 132
+/svn/BaseConocimiento/!svn/ver/3218/RepositorioProyectos/CIF/fuente/src/cif/reportes/clases/C_1_4_EfectividadPlantaciones_Model.java
+END
+C_1_6_ArbolesAislados_Model.java
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/svn/BaseConocimiento/!svn/ver/3218/RepositorioProyectos/CIF/fuente/src/cif/reportes/clases/C_1_6_ArbolesAislados_Model.java
+END

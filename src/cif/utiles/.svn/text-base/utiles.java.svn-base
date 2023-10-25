@@ -1,0 +1,94 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package cif.utiles;
+
+import cif.bd.ClassParams;
+import cif.manage.Manage;
+import cif.manage.User;
+import java.io.FileInputStream;
+import java.io.IOException;
+import org.kxml2.io.KXmlParser;
+import org.xmlpull.v1.XmlPullParserException;
+
+/**
+ *
+ * @author juliette
+ */
+public class utiles {
+
+    public static String generate_id(Integer nextid)
+    {
+        String id=null;
+        if (nextid<10)
+        {
+            id="00"+nextid.toString();
+        }
+        if ((nextid>=10)&&(nextid<100))
+        {
+            id="0"+nextid.toString();
+        }
+        Manage manager = Manage.getInstance();
+        User user = manager.getUser();
+        id=user.getProvincia()+user.getMunicipio()+id;
+        return id;
+    }
+
+    public static void SetParams(String path) throws XmlPullParserException, IOException
+    {
+        FileInputStream fi = new FileInputStream(path);
+        KXmlParser kxml = new KXmlParser();
+        kxml.setInput(fi, null);
+        String host = "",port = "",BD = "",user = "",passw = "";
+        int tagType = kxml.next();
+        while(tagType != KXmlParser.END_DOCUMENT)
+        {
+            if(tagType == KXmlParser.START_TAG)
+            {
+                String tagName = kxml.getName();
+                if(tagName.equals("host"))
+                {
+                    host = kxml.getAttributeValue(null, "value");
+                }
+                else if(tagName.equals("port"))
+                {
+                    port = kxml.getAttributeValue(null, "value");
+                }
+                else if(tagName.equals("name"))
+                {
+                    BD = kxml.getAttributeValue(null, "value");
+                }
+                else if(tagName.equals("user"))
+                {
+                    user = kxml.getAttributeValue(null, "value");
+                }
+                else if(tagName.equals("passw"))
+                {
+                    passw = kxml.getAttributeValue(null, "value");
+                }
+            }
+            tagType = kxml.next();
+        }
+        ClassParams.HOST = "jdbc:postgresql://"+host+":"+port+"/"+BD;
+        ClassParams.USER = user;
+        ClassParams.PASSW = passw;
+    }
+
+    public static String getPath(String dir, String name)
+    {
+        String home_dir = System.getProperty("user.dir");
+        String separator = System.getProperty("file.separator");
+        String result = "";
+        if(separator.equals("/"))
+        {
+            result = home_dir+separator+dir+separator+name;
+        }
+        else
+        {
+            result = home_dir+"\\"+dir+"\\"+name;
+        }
+        return result;
+    }
+}

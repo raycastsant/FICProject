@@ -1,0 +1,49 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package cif;
+
+import cif.gui.JF_Principal;
+import cif.gui.LoginDialog;
+import cif.manage.Manage;
+import cif.utiles.utiles;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.xmlpull.v1.XmlPullParserException;
+
+/**
+ *
+ * @author Raisels n,
+ */
+public class Main {
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args)
+    {
+        if(Manage.isCreated())
+        {
+            return;
+        }
+        try {
+            utiles.SetParams(utiles.getPath("config", "params.xml"));
+            JF_Principal principal = new JF_Principal();
+            Manage.getInstance();
+            LoginDialog ld = new LoginDialog(principal);
+            principal.setVisible(true);
+            ld.setVisible(true);
+        }
+        catch (XmlPullParserException ex)
+        {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (IOException ex)
+        {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+}

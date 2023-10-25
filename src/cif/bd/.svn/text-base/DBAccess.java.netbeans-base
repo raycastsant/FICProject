@@ -1,0 +1,406 @@
+package cif.bd;
+
+
+import cif.manage.Manage;
+import cif.manage.User;
+import cif.manage.User;
+import cif.utiles.utiles;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Hashtable;
+
+
+public class DBAccess 
+{
+	public static JDBCAdapter getconnection() throws SQLException
+	{
+		if(!CollectionConnection.hasConnection(ClassParams.HOST))
+		{
+			DataAccess da = new DataAccess(ClassParams.HOST,ClassParams.DRIVER,ClassParams.USER,ClassParams.PASSW);
+			CollectionConnection.SetConnection(da);
+		}
+		JDBCAdapter con = CollectionConnection.getConnection(ClassParams.HOST);
+		return con;
+	}
+
+        public static int verificarPkey(String id,Integer anno,String tablename) throws SQLException
+	{
+            if(!CollectionConnection.hasConnection(ClassParams.HOST))
+            {
+                DataAccess da = new DataAccess(ClassParams.HOST,ClassParams.DRIVER,ClassParams.USER,ClassParams.PASSW);
+                CollectionConnection.SetConnection(da);
+            }
+            JDBCAdapter adapter = CollectionConnection.getConnection(ClassParams.HOST);
+            Manage manager = Manage.getInstance();
+            User user = manager.getUser();
+            adapter.executeQuery("select id,anno,municipio from "+tablename+" where id="+id+" and user"+user.getMunicipio()+" and anno"+anno+"");
+            return adapter.getRowCount();
+        }
+
+	public static void insertTAC(String id,Integer anno,Double bosqnat,Double plant,String tablename) throws SQLException
+	{
+            if(!CollectionConnection.hasConnection(ClassParams.HOST))
+            {
+                DataAccess da = new DataAccess(ClassParams.HOST,ClassParams.DRIVER,ClassParams.USER,ClassParams.PASSW);
+                CollectionConnection.SetConnection(da);
+            }
+            JDBCAdapter adapter = CollectionConnection.getConnection(ClassParams.HOST);
+
+            /*adapter.executeQuery("select "+tipo+" from idEntidad");
+            Integer nextid=java.lang.Integer.parseInt(adapter.getValueAt(0, 0).toString());
+            if (nextid==null) 
+            {
+                nextid=1;
+            }
+            id=utiles.generate_id(nextid);*/
+            Manage manager = Manage.getInstance();
+            User user = manager.getUser();      
+            adapter.executeQuery("insert into "+tablename+" (id,municipio,anno,bosques_nat,plantacion_estb) values ("+id+","+user.getMunicipio()+","+anno+","+bosqnat+","+plant+")");
+            /* if (nextid==1)
+            {
+                adapter.executeQuery("insert into idEntidad ("+tipo+") values ("+nextid+"");
+            }
+             else
+             {
+                adapter.executeQuery("update idEntidad set "+tipo+"= "+nextid+1+"");
+             }*/
+        }
+
+        public static void insertIndBoscosidad(String id,Integer anno,Double superfgeog,String tablename) throws SQLException
+	{
+            if(!CollectionConnection.hasConnection(ClassParams.HOST))
+            {
+                DataAccess da = new DataAccess(ClassParams.HOST,ClassParams.DRIVER,ClassParams.USER,ClassParams.PASSW);
+                CollectionConnection.SetConnection(da);
+            }
+            JDBCAdapter adapter = CollectionConnection.getConnection(ClassParams.HOST);          
+            Manage manager = Manage.getInstance();
+            User user = manager.getUser();
+            adapter.executeQuery("insert into "+tablename+" (id,municipio,anno,superficie_geog) values ("+id+","+user.getMunicipio()+","+anno+","+superfgeog+")");
+        }
+
+        public static void insertRelTACSCF(String id,Integer anno,Double bosqralo,Double calvero,Double lugtalado,Double plantjoven,Double plantmuertos,Double superfquem,Double xmogote,String tablename) throws SQLException
+	{
+            if(!CollectionConnection.hasConnection(ClassParams.HOST))
+            {
+                DataAccess da = new DataAccess(ClassParams.HOST,ClassParams.DRIVER,ClassParams.USER,ClassParams.PASSW);
+                CollectionConnection.SetConnection(da);
+            }
+            JDBCAdapter adapter = CollectionConnection.getConnection(ClassParams.HOST);
+            Manage manager = Manage.getInstance();
+            User user = manager.getUser();
+            adapter.executeQuery("insert into "+tablename+" (id,municipio,anno,bosque_ralo,calvero,lugar_talado,plantac_joven,plantac_montes_muertos,superf_quemada,xerofilo_mogote) values ("+id+","+user.getMunicipio()+","+anno+","+bosqralo+", "+calvero+","+lugtalado+","+plantjoven+","+plantmuertos+","+superfquem+","+xmogote+")");
+        }
+
+        public static void insertEfectv(String id,Integer anno,Double supfplant,Double supflog,Integer plantvivas,Integer plantmuertas,Integer especie,String tablename) throws SQLException
+	{
+            if(!CollectionConnection.hasConnection(ClassParams.HOST))
+            {
+                DataAccess da = new DataAccess(ClassParams.HOST,ClassParams.DRIVER,ClassParams.USER,ClassParams.PASSW);
+                CollectionConnection.SetConnection(da);
+            }
+            JDBCAdapter adapter = CollectionConnection.getConnection(ClassParams.HOST);
+            Manage manager = Manage.getInstance();
+            User user = manager.getUser();
+            adapter.executeQuery("insert into "+tablename+" (id,municipio,anno,superf_plant,superf_log,plant_vivas,plant_muertas,especie) values ("+id+","+user.getMunicipio()+","+anno+","+supfplant+", "+supflog+","+plantvivas+","+plantmuertas+","+especie+")");
+        }
+
+        public static void insertPendref(String id,Integer anno,Double areatal_def,Double areaquem_def,Double areatal,Double areaestabl,String tablename) throws SQLException
+	{
+            if(!CollectionConnection.hasConnection(ClassParams.HOST))
+            {
+                DataAccess da = new DataAccess(ClassParams.HOST,ClassParams.DRIVER,ClassParams.USER,ClassParams.PASSW);
+                CollectionConnection.SetConnection(da);
+            }
+            JDBCAdapter adapter = CollectionConnection.getConnection(ClassParams.HOST);
+            Manage manager = Manage.getInstance();
+            User user = manager.getUser();
+            adapter.executeQuery("insert into "+tablename+" (id,municipio,anno,area_tal_def,area_quem_def,area_tal,area_establ) values ("+id+","+user.getMunicipio()+","+anno+","+areatal_def+", "+areaquem_def+","+areatal+","+areaestabl+")");
+        }
+
+         public static void insertArbAisl(String id,Integer anno,Integer arbexiste,Integer arbfalta,String tablename) throws SQLException
+	{
+            if(!CollectionConnection.hasConnection(ClassParams.HOST))
+            {
+                DataAccess da = new DataAccess(ClassParams.HOST,ClassParams.DRIVER,ClassParams.USER,ClassParams.PASSW);
+                CollectionConnection.SetConnection(da);
+            }
+            JDBCAdapter adapter = CollectionConnection.getConnection(ClassParams.HOST);
+            Manage manager = Manage.getInstance();
+            User user = manager.getUser();
+            adapter.executeQuery("insert into "+tablename+" (id,municipio,anno,arbol_existe,arbol_falta) values ("+id+","+user.getMunicipio()+","+anno+","+arbexiste+", "+arbfalta+")");
+        }
+
+         public static void insertInc(String id,Integer anno,Integer cant,Double distrec,Double superftot,String tablename) throws SQLException
+	{
+            if(!CollectionConnection.hasConnection(ClassParams.HOST))
+            {
+                DataAccess da = new DataAccess(ClassParams.HOST,ClassParams.DRIVER,ClassParams.USER,ClassParams.PASSW);
+                CollectionConnection.SetConnection(da);
+            }
+            JDBCAdapter adapter = CollectionConnection.getConnection(ClassParams.HOST);
+            Manage manager = Manage.getInstance();
+            User user = manager.getUser();
+            adapter.executeQuery("insert into "+tablename+" (id,municipio,anno,cantidad,distanc_recorr,super_afect_tot) values ("+id+","+user.getMunicipio()+","+anno+","+cant+", "+distrec+","+superftot+")");
+        }
+
+         public static void insertIncEsp(String id,Integer anno,Double perddir,Double perdind,Double haperd,String tablename) throws SQLException
+	{
+            if(!CollectionConnection.hasConnection(ClassParams.HOST))
+            {
+                DataAccess da = new DataAccess(ClassParams.HOST,ClassParams.DRIVER,ClassParams.USER,ClassParams.PASSW);
+                CollectionConnection.SetConnection(da);
+            }
+            JDBCAdapter adapter = CollectionConnection.getConnection(ClassParams.HOST);
+            Manage manager = Manage.getInstance();
+            User user = manager.getUser();
+            adapter.executeQuery("insert into "+tablename+" (id,municipio,anno,especie,perd_direc,perd_indir,hectar_perdt) values ("+id+","+user.getMunicipio()+","+anno+","+perddir+", "+perdind+","+haperd+")");
+        }
+
+         public static void insertBosqAfect(String id,Integer anno,Double bntexo,Double peexo,Double bnpast,Double pepast,Double plagenferm,Double otrascausas,String tablename) throws SQLException
+	{
+            if(!CollectionConnection.hasConnection(ClassParams.HOST))
+            {
+                DataAccess da = new DataAccess(ClassParams.HOST,ClassParams.DRIVER,ClassParams.USER,ClassParams.PASSW);
+                CollectionConnection.SetConnection(da);
+            }
+            JDBCAdapter adapter = CollectionConnection.getConnection(ClassParams.HOST);
+            Manage manager = Manage.getInstance();
+            User user = manager.getUser();
+            adapter.executeQuery("INSERT INTO "+tablename+"(id, anno, municipio, bosq_nat_exo, plant_estb_exo, bosq_nat_past, pant_estb_past, plagas_enferm, otras_causas)VALUES ("+id+","+anno+","+user.getMunicipio()+", "+bntexo+", "+peexo+", "+bnpast+", "+pepast+", "+plagenferm+", "+otrascausas+")");
+        }
+
+         public static void insertBosqManSil(String id,Integer anno,Double selimp,Double nalimp,Double sepoda,Double napoda,Double seraleo,Double narealeo,Double serec,Double narec,String tablename) throws SQLException
+	{
+            if(!CollectionConnection.hasConnection(ClassParams.HOST))
+            {
+                DataAccess da = new DataAccess(ClassParams.HOST,ClassParams.DRIVER,ClassParams.USER,ClassParams.PASSW);
+                CollectionConnection.SetConnection(da);
+            }
+            JDBCAdapter adapter = CollectionConnection.getConnection(ClassParams.HOST);
+            Manage manager = Manage.getInstance();
+            User user = manager.getUser();
+            adapter.executeQuery("INSERT INTO "+tablename+"(id, anno, municipio, superf_ejec_limp, nec_anual_limp, superf_ejec_poda, nec_anual_poda, superf_ejec_raleo, nec_anual_realeo, superf_ejec_rec, nec_anual_rec)VALUES ("+id+","+anno+","+user.getMunicipio()+","+anno+","+selimp+", "+nalimp+", "+sepoda+", "+napoda+", "+seraleo+", "+narealeo+", "+serec+", "+narec+")");
+         }
+
+         public static void insertFormacForestal(String id,Integer anno,String idform,Double area,String tablename) throws SQLException
+	{
+            if(!CollectionConnection.hasConnection(ClassParams.HOST))
+            {
+                DataAccess da = new DataAccess(ClassParams.HOST,ClassParams.DRIVER,ClassParams.USER,ClassParams.PASSW);
+                CollectionConnection.SetConnection(da);
+            }
+            JDBCAdapter adapter = CollectionConnection.getConnection(ClassParams.HOST);
+            Manage manager = Manage.getInstance();
+            User user = manager.getUser();
+            adapter.executeQuery("INSERT INTO "+tablename+"(id, id_formforest, anno, municipio, area) VALUES ("+id+","+idform+","+anno+","+user.getMunicipio()+","+area+")");
+         }
+
+         public static void insertEspEndm(String id,Integer anno,String idespcend,Double progconserv,String tablename) throws SQLException
+	{
+            if(!CollectionConnection.hasConnection(ClassParams.HOST))
+            {
+                DataAccess da = new DataAccess(ClassParams.HOST,ClassParams.DRIVER,ClassParams.USER,ClassParams.PASSW);
+                CollectionConnection.SetConnection(da);
+            }
+            JDBCAdapter adapter = CollectionConnection.getConnection(ClassParams.HOST);
+            Manage manager = Manage.getInstance();
+            User user = manager.getUser();
+            adapter.executeQuery("INSERT INTO "+tablename+"(id, id_espendm, anno, municipio, progconserv) VALUES ("+id+","+idespcend+","+anno+","+user.getMunicipio()+","+progconserv+")");
+         }
+
+         public static void insertEjecProgProtec(String id,Integer anno,String idejecprgm,Double superf,String tablename) throws SQLException
+	{
+            if(!CollectionConnection.hasConnection(ClassParams.HOST))
+            {
+                DataAccess da = new DataAccess(ClassParams.HOST,ClassParams.DRIVER,ClassParams.USER,ClassParams.PASSW);
+                CollectionConnection.SetConnection(da);
+            }
+            JDBCAdapter adapter = CollectionConnection.getConnection(ClassParams.HOST);
+            Manage manager = Manage.getInstance();
+            User user = manager.getUser();
+            adapter.executeQuery("INSERT INTO "+tablename+"(id, id_ejecprgm, anno, municipio, superficie) VALUES ("+id+","+idejecprgm+","+anno+","+user.getMunicipio()+","+superf+")");
+         }
+
+          public static void insertProgEducExt(String id,Integer anno,String idejeceduc,Integer actv,Integer particp,String tablename) throws SQLException
+	{
+            if(!CollectionConnection.hasConnection(ClassParams.HOST))
+            {
+                DataAccess da = new DataAccess(ClassParams.HOST,ClassParams.DRIVER,ClassParams.USER,ClassParams.PASSW);
+                CollectionConnection.SetConnection(da);
+            }
+            JDBCAdapter adapter = CollectionConnection.getConnection(ClassParams.HOST);
+            Manage manager = Manage.getInstance();
+            User user = manager.getUser();
+            adapter.executeQuery("INSERT INTO "+tablename+"(id, id_ejeceduc, anno, municipio, cant_actv, cant_particp) VALUES ("+id+","+idejeceduc+","+anno+","+user.getMunicipio()+", "+actv+", "+particp+")");
+         }
+
+          public static void insertPresas(String id,Integer anno,Double longperm,Double anchorefaj,Double stzprot,String tablename) throws SQLException
+	{
+            if(!CollectionConnection.hasConnection(ClassParams.HOST))
+            {
+                DataAccess da = new DataAccess(ClassParams.HOST,ClassParams.DRIVER,ClassParams.USER,ClassParams.PASSW);
+                CollectionConnection.SetConnection(da);
+            }
+            JDBCAdapter adapter = CollectionConnection.getConnection(ClassParams.HOST);
+            Manage manager = Manage.getInstance();
+            User user = manager.getUser();
+            adapter.executeQuery("INSERT INTO "+tablename+"(id, anno, municipio, long_perm, anchorefaj, suptotzonprotec) VALUES ("+id+","+anno+","+user.getMunicipio()+", "+longperm+", "+anchorefaj+", "+stzprot+")");
+         }
+
+          public static void insertMicroPresas(String id,Integer anno,Double longperm,Double anchorefaj,Double stzprot,String tablename) throws SQLException
+	{
+            if(!CollectionConnection.hasConnection(ClassParams.HOST))
+            {
+                DataAccess da = new DataAccess(ClassParams.HOST,ClassParams.DRIVER,ClassParams.USER,ClassParams.PASSW);
+                CollectionConnection.SetConnection(da);
+            }
+            JDBCAdapter adapter = CollectionConnection.getConnection(ClassParams.HOST);
+            Manage manager = Manage.getInstance();
+            User user = manager.getUser();
+            adapter.executeQuery("INSERT INTO "+tablename+"(id, anno, municipio, long_perm, anchorefaj, suptotzonprotec) VALUES ("+id+","+anno+","+user.getMunicipio()+", "+longperm+", "+anchorefaj+", "+stzprot+")");
+         }
+
+          public static void insertCorrFluvial(String id,Integer anno,Double longprinc,Double arfprinc,Double long1er,Double arf1er,Double long2do,Double arf2do,Double stzprot,String tablename) throws SQLException
+	{
+            if(!CollectionConnection.hasConnection(ClassParams.HOST))
+            {
+                DataAccess da = new DataAccess(ClassParams.HOST,ClassParams.DRIVER,ClassParams.USER,ClassParams.PASSW);
+                CollectionConnection.SetConnection(da);
+            }
+            JDBCAdapter adapter = CollectionConnection.getConnection(ClassParams.HOST);
+            Manage manager = Manage.getInstance();
+            User user = manager.getUser();
+            adapter.executeQuery("INSERT INTO "+tablename+"(id, anno, municipio, long_princ, anchorefaj_princ, long_1er, anchorefal_1er, long_2do, anchorefaj_2do, suptotzonprotec) VALUES ("+id+","+anno+","+user.getMunicipio()+","+longprinc+", "+arfprinc+", "+long1er+", "+arf1er+", "+long2do+", "+arf2do+", "+stzprot+")");
+         }
+
+          public static void insertFajaCostera(String id,Integer anno,Double longcostprot,Double arfaj,Double longtotlin,String tablename) throws SQLException
+	{
+            if(!CollectionConnection.hasConnection(ClassParams.HOST))
+            {
+                DataAccess da = new DataAccess(ClassParams.HOST,ClassParams.DRIVER,ClassParams.USER,ClassParams.PASSW);
+                CollectionConnection.SetConnection(da);
+            }
+            JDBCAdapter adapter = CollectionConnection.getConnection(ClassParams.HOST);
+            Manage manager = Manage.getInstance();
+            User user = manager.getUser();
+            adapter.executeQuery("INSERT INTO "+tablename+"(id, anno, municipio, long_cost_prot, anchorefaj, long_tot_lin) VALUES ("+id+","+anno+","+user.getMunicipio()+","+longcostprot+" , "+arfaj+", "+longtotlin+")");
+         }
+
+          public static void insertActvMinera(String id,Integer anno,Double superf_cultv,Double superf_afect,String tablename) throws SQLException
+	{
+            if(!CollectionConnection.hasConnection(ClassParams.HOST))
+            {
+                DataAccess da = new DataAccess(ClassParams.HOST,ClassParams.DRIVER,ClassParams.USER,ClassParams.PASSW);
+                CollectionConnection.SetConnection(da);
+            }
+            JDBCAdapter adapter = CollectionConnection.getConnection(ClassParams.HOST);
+            Manage manager = Manage.getInstance();
+            User user = manager.getUser();
+            adapter.executeQuery("INSERT INTO "+tablename+"(id, anno, municipio, superf_cultv, superf_afect) VALUES ("+id+","+anno+","+user.getMunicipio()+","+superf_cultv+","+superf_afect+")");
+         }
+
+          public static void insertIndRendSost(String id,Integer anno,Double caebprod,Double cap_bprod ,Double caebprot , Double cap_bprot,String tablename) throws SQLException
+	{
+            if(!CollectionConnection.hasConnection(ClassParams.HOST))
+            {
+                DataAccess da = new DataAccess(ClassParams.HOST,ClassParams.DRIVER,ClassParams.USER,ClassParams.PASSW);
+                CollectionConnection.SetConnection(da);
+            }
+            JDBCAdapter adapter = CollectionConnection.getConnection(ClassParams.HOST);
+            Manage manager = Manage.getInstance();
+            User user = manager.getUser();
+            adapter.executeQuery("INSERT INTO "+tablename+"(id, anno, municipio, cortanuejec_bprod, cortanuperm_bprod, cortanuejec_bprot, cortanuperm_bprot) VALUES ("+id+","+anno+","+user.getMunicipio()+","+caebprod+","+cap_bprod+" ,"+caebprot+" , "+cap_bprot+")");
+         }
+
+          public static void insertPorcMadExtrBosqNat(String id,Integer anno,Double volmaprov,String tablename) throws SQLException
+	{
+            if(!CollectionConnection.hasConnection(ClassParams.HOST))
+            {
+                DataAccess da = new DataAccess(ClassParams.HOST,ClassParams.DRIVER,ClassParams.USER,ClassParams.PASSW);
+                CollectionConnection.SetConnection(da);
+            }
+            JDBCAdapter adapter = CollectionConnection.getConnection(ClassParams.HOST);
+            Manage manager = Manage.getInstance();
+            User user = manager.getUser();
+            adapter.executeQuery("INSERT INTO "+tablename+"(id, anno, municipio, volm_aprov) VALUES ("+id+","+anno+","+user.getMunicipio()+","+volmaprov+")");
+         }
+
+          public static void insertTalas(String id,Integer anno,Integer idtalas,Double supfftot, Double supftecninad,String tablename) throws SQLException
+	{
+            if(!CollectionConnection.hasConnection(ClassParams.HOST))
+            {
+                DataAccess da = new DataAccess(ClassParams.HOST,ClassParams.DRIVER,ClassParams.USER,ClassParams.PASSW);
+                CollectionConnection.SetConnection(da);
+            }
+            JDBCAdapter adapter = CollectionConnection.getConnection(ClassParams.HOST);
+            Manage manager = Manage.getInstance();
+            User user = manager.getUser();
+            adapter.executeQuery("INSERT INTO "+tablename+"(id, id_talas, anno, municipio, superftot, superftecninad) VALUES ("+id+","+idtalas+","+anno+","+user.getMunicipio()+","+supfftot+", "+supftecninad+")");
+         }
+
+          public static void insertProdForNoMad(String id,Integer anno,Integer idtalas,Integer cant, Double potencial,Double valor,String tablename) throws SQLException
+	{
+            if(!CollectionConnection.hasConnection(ClassParams.HOST))
+            {
+                DataAccess da = new DataAccess(ClassParams.HOST,ClassParams.DRIVER,ClassParams.USER,ClassParams.PASSW);
+                CollectionConnection.SetConnection(da);
+            }
+            JDBCAdapter adapter = CollectionConnection.getConnection(ClassParams.HOST);
+            Manage manager = Manage.getInstance();
+            User user = manager.getUser();
+            adapter.executeQuery("INSERT INTO "+tablename+"(id, id_pfnm, anno, municipio, cantidad, potencial, valor) VALUES ("+id+","+idtalas+","+anno+","+user.getMunicipio()+","+cant+", "+potencial+", "+valor+")");
+         }
+
+          public static void insertSistAgrosilvopast(String id,Integer anno,Integer cantfincaforst,Double supffincaforst,Double supfpotagrosilvp,Double supfmanagrosilvp,Double supfpotfincaforst, Double regfincaforst,String tablename) throws SQLException
+	{
+            if(!CollectionConnection.hasConnection(ClassParams.HOST))
+            {
+                DataAccess da = new DataAccess(ClassParams.HOST,ClassParams.DRIVER,ClassParams.USER,ClassParams.PASSW);
+                CollectionConnection.SetConnection(da);
+            }
+            JDBCAdapter adapter = CollectionConnection.getConnection(ClassParams.HOST);
+            Manage manager = Manage.getInstance();
+            User user = manager.getUser();
+            adapter.executeQuery("INSERT INTO "+tablename+"(id, anno, municipio, cant_fincaforst, superf_fincaforst, superf_pot_agrosilvp, superf_man_agrosilvp, superf_pot_fincaforst, reg_fincaforst) VALUES ("+id+","+anno+","+user.getMunicipio()+","+cantfincaforst+", "+supffincaforst+", "+supfpotagrosilvp+", "+supfmanagrosilvp+", "+supfpotfincaforst+", "+regfincaforst+")");
+         }
+
+          public static void insertSalario(String id,Integer anno,Integer accidparc,Integer accidmort,String tablename) throws SQLException
+	{
+            if(!CollectionConnection.hasConnection(ClassParams.HOST))
+            {
+                DataAccess da = new DataAccess(ClassParams.HOST,ClassParams.DRIVER,ClassParams.USER,ClassParams.PASSW);
+                CollectionConnection.SetConnection(da);
+            }
+            JDBCAdapter adapter = CollectionConnection.getConnection(ClassParams.HOST);
+            Manage manager = Manage.getInstance();
+            User user = manager.getUser();
+            adapter.executeQuery("INSERT INTO "+tablename+"(id, anno, municipio, accidentes_par, accidentes_mort) VALUES ("+id+","+anno+","+user.getMunicipio()+","+accidparc+", "+accidmort+")");
+         }
+
+          public static void insertServicios(String id,Integer anno,Integer idserv,Integer cantidad,Integer planmanejo,String tablename) throws SQLException
+	{
+            if(!CollectionConnection.hasConnection(ClassParams.HOST))
+            {
+                DataAccess da = new DataAccess(ClassParams.HOST,ClassParams.DRIVER,ClassParams.USER,ClassParams.PASSW);
+                CollectionConnection.SetConnection(da);
+            }
+            JDBCAdapter adapter = CollectionConnection.getConnection(ClassParams.HOST);
+            Manage manager = Manage.getInstance();
+            User user = manager.getUser();
+            adapter.executeQuery("INSERT INTO "+tablename+"(id, id_serv, anno, municipio, cantidad, plan_manejo) VALUES ("+id+","+idserv+","+anno+","+user.getMunicipio()+","+cantidad+", "+planmanejo+")");
+         }
+
+          public static void insertCatgOcupacional(String id,Integer anno,Integer idcatg,Integer cantmuj,String tablename) throws SQLException
+	{
+            if(!CollectionConnection.hasConnection(ClassParams.HOST))
+            {
+                DataAccess da = new DataAccess(ClassParams.HOST,ClassParams.DRIVER,ClassParams.USER,ClassParams.PASSW);
+                CollectionConnection.SetConnection(da);
+            }
+            JDBCAdapter adapter = CollectionConnection.getConnection(ClassParams.HOST);
+            Manage manager = Manage.getInstance();
+            User user = manager.getUser();
+            adapter.executeQuery("INSERT INTO "+tablename+"(id, id_catg, anno, municipio, cant_muj) VALUES ("+id+","+idcatg+","+anno+","+user.getMunicipio()+","+cantmuj+")");
+         }
+}

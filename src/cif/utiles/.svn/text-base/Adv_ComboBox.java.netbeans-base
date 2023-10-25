@@ -1,0 +1,33 @@
+package com.geosi.vmanage.util;
+
+import java.util.Hashtable;
+
+import javax.swing.JComboBox;
+
+public class Adv_ComboBox extends JComboBox
+{
+	Hashtable<Object,Object> datos;
+	
+	public Adv_ComboBox()
+	{
+		super();
+		datos = new Hashtable<Object,Object>();
+	}
+	
+	public void addItem(Object value, Object text)
+	{
+		datos.put(text, value);
+		super.addItem(text);
+	}
+	
+	public Object getSelectedValue()
+	{
+		Object obj = getSelectedItem();
+		return datos.get(obj);
+	}
+	
+	public Object getValueOf(Object object)
+	{
+		return datos.get(object);
+	}
+}
